@@ -72,6 +72,8 @@ def text_extraction(input_ids, length, lm_ratio=0.0):
             return input_ids[random_start: random_start+length], []
     
     # lm    
+    # What happens when either a or b (in first if case) is very small? If b is very small, it'll be an AE task. If a is small, still lm task.
+    # What happens in the second else case if b is very small? It's treated as an AE task.
     if input_len <= length:
         r = random.randint(0, input_len-1)
         return input_ids[:r+1], input_ids[r+1:]
@@ -88,6 +90,7 @@ def pretrain_tokenize_function(examples, model, mem, lm_ratio=0.0):
 
     max_len = model.training_args.model_max_length  # heuristic
 
+    # Each data point in the batch can be AE or LM.
     for idx in range(len(text_output["input_ids"])):
         
         ae = True
@@ -95,7 +98,8 @@ def pretrain_tokenize_function(examples, model, mem, lm_ratio=0.0):
         length_a = len(a)
         num_segments = model.compute_num_segments(length_a)
         total_mem_length = num_segments * model.mem_size
-        
+
+        # Make sure that it is lm task iff it has at least min tokens for lm (64).
         if len(b) > model.training_args.min_tokens_for_lm:  # avoid too few tokens for lm, which is a waste of computing
             ae = False
             b = b[:max_len]
@@ -104,6 +108,7 @@ def pretrain_tokenize_function(examples, model, mem, lm_ratio=0.0):
 
         # decoder part: note that in v2, we add mem_tokens to the prompt_ids for easy implementation; which is different from v1 implementation where mem tokens are not in the prompt_ids
         if ae:  # autoencoding objective
+            # Why is it mem[0]?
             prompt_ids = [mem[0]] * total_mem_length + [model.ae_token_id]
             answer_ids = a + [model.eos_id]    # if ae, eos token
         else:   # lm objective

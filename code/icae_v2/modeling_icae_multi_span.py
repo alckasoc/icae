@@ -212,8 +212,8 @@ class ICAE(torch.nn.Module):
 
 
         logits = decoder_outputs.logits
-        effective_logits = logits[:,:-1,:].reshape(-1, logits.size(-1))
-        target_ids = labels[:,1:].reshape(-1)
+        effective_logits = logits[:,:-1,:].reshape(-1, logits.size(-1))  # Why are we skipping the last generated logit?
+        target_ids = labels[:,1:].reshape(-1)  # Why does it take from the first index onwards?
         loss = self.loss_fct(effective_logits, target_ids)
         return {"loss": loss, "logits": logits}
     

@@ -3,4 +3,4 @@ datasets
 peft
 tf-keras
 ipywidgets
-flash-attn --no-build-isolation
+flash-attn
