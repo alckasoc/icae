@@ -161,7 +161,7 @@ class ICAE(torch.nn.Module):
         
     def compute_num_segments(self, total_length):
         assert total_length > 0
-        num_segments = math.ceil(total_length / (self.mem_size * self.mean_compression_rate))
+        num_segments = math.ceil(total_length / (self.mem_size * self.mean_compression_rate))  # 128 * 4 -> 1 * (128*4)
         return num_segments
 
 
@@ -200,7 +200,7 @@ class ICAE(torch.nn.Module):
             print(f"start_idx: {start_idx} | end_idx: {end_idx}")
             segment_input_ids = input_ids[:, start_idx:end_idx]
             print("segment_input_ids shape: ", segment_input_ids.size())
-            print("append_sequence shape: ", )
+            print("append_sequence shape: ", self.append_sequence.size())
             segment_input_ids = torch.cat([segment_input_ids, self.append_sequence], dim=1)
             print("segment_input_ids shape after concat: ", segment_input_ids.size())
             mem_flag = segment_input_ids >= self.vocab_size

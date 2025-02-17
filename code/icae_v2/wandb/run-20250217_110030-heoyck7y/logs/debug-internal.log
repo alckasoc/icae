@@ -1,0 +1,15 @@
+{"time":"2025-02-17T11:00:30.586261845Z","level":"INFO","msg":"stream: starting","core version":"0.19.6","symlink path":"/home/jovyan/work/icae/code/icae_v2/wandb/run-20250217_110030-heoyck7y/logs/debug-core.log"}
+{"time":"2025-02-17T11:00:30.691954203Z","level":"INFO","msg":"created new stream","id":"heoyck7y"}
+{"time":"2025-02-17T11:00:30.692003525Z","level":"INFO","msg":"stream: started","id":"heoyck7y"}
+{"time":"2025-02-17T11:00:30.692044792Z","level":"INFO","msg":"writer: Do: started","stream_id":"heoyck7y"}
+{"time":"2025-02-17T11:00:30.692084325Z","level":"INFO","msg":"handler: started","stream_id":"heoyck7y"}
+{"time":"2025-02-17T11:00:30.692160537Z","level":"INFO","msg":"sender: started","stream_id":"heoyck7y"}
+{"time":"2025-02-17T11:00:30.932227694Z","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-02-17T11:01:40.173443979Z","level":"INFO","msg":"stream: closing","id":"heoyck7y"}
+{"time":"2025-02-17T11:01:40.17348213Z","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2025-02-17T11:01:40.173999525Z","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2025-02-17T11:01:41.490398579Z","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-02-17T11:01:41.672630149Z","level":"INFO","msg":"handler: closed","stream_id":"heoyck7y"}
+{"time":"2025-02-17T11:01:41.672684009Z","level":"INFO","msg":"writer: Close: closed","stream_id":"heoyck7y"}
+{"time":"2025-02-17T11:01:41.672702123Z","level":"INFO","msg":"sender: closed","stream_id":"heoyck7y"}
+{"time":"2025-02-17T11:01:41.672830663Z","level":"INFO","msg":"stream: closed","id":"heoyck7y"}

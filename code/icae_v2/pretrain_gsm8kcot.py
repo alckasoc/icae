@@ -48,11 +48,11 @@ class TrainingArguments(transformers.TrainingArguments):
         metadata={"help": "Maximum sequence length. Sequences will be right padded (and possibly truncated)."},
     )
     fixed_mem_size: int = field(
-        default=128,
+        default=1,
         metadata={"help": "Enabling the fixed mem size."},
     )
     mean_compression_rate: int = field(
-        default=4,
+        default=128*4,
         metadata={"help": "Mean compression rate; default=4"},
     )
     min_tokens_for_lm: int = field(
@@ -64,7 +64,7 @@ class TrainingArguments(transformers.TrainingArguments):
         metadata={"help": "Leave some tokens without loss for lm objective"},
     )
     lm_ratio: float = field(
-        default=0.5,
+        default=0.0,
         metadata={"help": "Ratio for LM training."},
     )
     add_special_token_for_lm: bool = field(
