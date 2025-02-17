@@ -74,7 +74,15 @@ class TrainingArguments(transformers.TrainingArguments):
         default="",
         metadata={"help": "The checkpoint that should be restored from for fine-tuning"}
     )
-
+    per_device_train_batch_size: int = field(
+        default=1,
+        metadata={"help": "The batch size per GPU/XPU/TPU/MPS/NPU core/CPU for training."}
+    )
+    per_device_eval_batch_size: int = field(
+        default=1,
+        metadata={"help": "The batch size per GPU/XPU/TPU/MPS/NPU core/CPU for evaluation."}
+    )
+    
 def print_trainable_parameters(model):
     trainable_parameters = 0
     all_param = 0
@@ -83,9 +91,6 @@ def print_trainable_parameters(model):
         if param.requires_grad:
             trainable_parameters += param.numel()
     print(f"trainable params: {trainable_parameters} || all params: {all_param} || trainable%: {100 * trainable_parameters / all_param}")
-    # for name, param in model.named_parameters():
-    #     if param.requires_grad:
-    #         print(name, param.shape)
 
 
 def freeze_model(model):
@@ -167,42 +172,68 @@ class ICAE(torch.nn.Module):
         labels: Optional[torch.LongTensor] = None,
     ):
         # encoder part
+        print("input_ids shape: ", input_ids.size())
+        print("prompt_answer_ids shape: ", prompt_answer_ids.size())
+        print("labels shape: ", labels.size())
+        
         batch_size = input_ids.size(0)
         total_length = input_ids.size(1)
         num_segments = self.compute_num_segments(total_length)
+        print("num_segments: ", num_segments)
         segment_length = math.ceil(total_length / num_segments)
-        
+        print("segment_length: ", segment_length)
+
         prompt_answer_embs = self.icae.get_base_model().model.embed_tokens(prompt_answer_ids)
+        print("prompt_answer_embs shape: ", prompt_answer_embs.size())
+        
         max_compressed_length = num_segments * self.mem_size
+        print("max_compressed_length: ", max_compressed_length)
+        
         compress_outputs = torch.zeros((max_compressed_length, self.dim)).to(prompt_answer_embs)
+        print("compress_outputs shape: ", compress_outputs.size())
         
         for segment_idx in range(num_segments):
+            print(f"===============Segment {segment_idx}=======================")
             
             start_idx = segment_idx * segment_length
             end_idx = min((segment_idx + 1) * segment_length, total_length)
+            print(f"start_idx: {start_idx} | end_idx: {end_idx}")
             segment_input_ids = input_ids[:, start_idx:end_idx]
+            print("segment_input_ids shape: ", segment_input_ids.size())
+            print("append_sequence shape: ", )
             segment_input_ids = torch.cat([segment_input_ids, self.append_sequence], dim=1)
+            print("segment_input_ids shape after concat: ", segment_input_ids.size())
             mem_flag = segment_input_ids >= self.vocab_size
+            print("mem_flag shape: ", mem_flag.size())
 
             segment_input_embedding = self.icae.get_base_model().model.embed_tokens(segment_input_ids)
+            print("segment_input_embedding shape: ", segment_input_embedding.size())
             segment_input_embedding[mem_flag] = self.memory_token_embed(segment_input_ids[mem_flag] - self.vocab_size).to(segment_input_embedding)
-
+            print("Populated segment_input_embedding memory tokens")
+            
             # compress the current segment
             segment_compress_outputs = self.icae(inputs_embeds=segment_input_embedding, output_hidden_states=True)
             segment_compress_outputs = segment_compress_outputs.hidden_states[-1]
+            print("segment_compress_outputs (last hidden state) shape: ", segment_compress_outputs.size())
 
             # collect memory tokens
             compress_outputs[segment_idx*self.mem_size: self.mem_size*(segment_idx+1)] = segment_compress_outputs[mem_flag]
+            print(f"Filled in compressed memory for memory segment {segment_idx}.")
             
             del segment_input_ids, segment_input_embedding
             torch.cuda.empty_cache()
-            
+
+            print(f"===============Segment {segment_idx} END=======================")
+        
         # decoder part
         decoder_mem_flag = (prompt_answer_ids >= self.vocab_size) & (prompt_answer_ids < self.vocab_size + self.mem_size)   # only mem tokens
+        print("decoder_mem_flag shape: ", decoder_mem_flag.size())
 
         prompt_answer_embs[decoder_mem_flag] = compress_outputs  # replace memory slots
+        print("Populated decoder memory tokens with compressed outputs.")
         special_prompt = prompt_answer_ids >= self.vocab_size_with_mem
         prompt_answer_embs[special_prompt] = self.memory_token_embed(prompt_answer_ids[special_prompt] - self.vocab_size).to(prompt_answer_embs)    # replace special token's embedding from self.memory_token_embed
+        print("Populated decoder special memory tokens.")
         
         if self.training:   # has an independent se.f.decoder
             decoder_outputs = self.decoder(inputs_embeds=prompt_answer_embs, output_hidden_states=True)
@@ -210,10 +241,13 @@ class ICAE(torch.nn.Module):
             with self.icae.disable_adapter():   # no independent decoder; use self.icae
                 decoder_outputs = self.icae(inputs_embeds=prompt_answer_embs, output_hidden_states=True)
 
-
         logits = decoder_outputs.logits
+        print("decoder_outputs logits shape: ", logits.size())
+
         effective_logits = logits[:,:-1,:].reshape(-1, logits.size(-1))  # Why are we skipping the last generated logit?
+        print("effective_logits shape: ", effective_logits.size())
         target_ids = labels[:,1:].reshape(-1)  # Why does it take from the first index onwards?
+        print("target_ids shape: ", target_ids.size())
         loss = self.loss_fct(effective_logits, target_ids)
         return {"loss": loss, "logits": logits}
     

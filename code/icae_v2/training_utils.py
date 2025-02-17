@@ -50,11 +50,16 @@ def train_model(model, train_dataset, eval_dataset, training_args, data_collator
     print(f"Loaded from the checkpoint: {checkpoint}")
 
     train_result = trainer.train(resume_from_checkpoint=checkpoint)
-    trainer.save_model()
+    # trainer.save_model()
     trainer.log_metrics("train", train_result.metrics)
     metrics = trainer.evaluate()
     trainer.log_metrics("eval", metrics)
     trainer.save_metrics("eval", metrics)
+
+    torch.save(trainer.model.state_dict(), "model_weights.pth")
+    
+
+    
 
 
 def text_extraction(input_ids, length, lm_ratio=0.0):
@@ -162,6 +167,7 @@ class DataCollatorForDynamicPadding:
         self.pad_token_id = pad_token_id
         self.pad_to_multiple_of = pad_to_multiple_of
     def __call__(self, examples):
+        print("DataCollatorForDynamicPadding examples shape: ", len(examples))
         input_ids = [torch.tensor(example["input_ids"], dtype=torch.long) for example in examples]
         labels = [torch.tensor(example["labels"], dtype=torch.long) for example in examples]
         prompt_answer_ids = [torch.tensor(example["prompt_answer_ids"], dtype=torch.long) for example in examples]

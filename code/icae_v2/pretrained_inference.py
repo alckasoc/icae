@@ -3,21 +3,22 @@ import torch
 from tqdm import tqdm
 from transformers import HfArgumentParser
 from peft import LoraConfig
-from modeling_icae_multi_span import ICAE, ModelArguments, DataArguments, TrainingArguments
 import sys
 from safetensors.torch import load_file
+
+from modeling_icae_multi_span import ICAE
+from pretrain_gsm8kcot import ModelArguments, DataArguments, TrainingArguments
 
 # Set the computation device
 device = "cuda"
 
 # Parse model, data, and training arguments
-parser = HfArgumentParser((ModelArguments, DataArguments, TrainingArguments))
-model_args, data_args, training_args = parser.parse_args_into_dataclasses()
+model_args, data_args, training_args = ModelArguments(), DataArguments(), TrainingArguments("./output")
 
 # Define Lora configuration
 lora_config = LoraConfig(
-    r=512,
-    lora_alpha=32,
+    r=model_args.lora_r,
+    lora_alpha=model_args.lora_alpha,
     lora_dropout=model_args.lora_dropout,
     bias="none",
     task_type="CAUSAL_LM"
@@ -28,8 +29,8 @@ model = ICAE(model_args, training_args, lora_config)
 
 # Load the fine-tuned checkpoint
 print(f"Loading trained checkpoint from {training_args.output_dir}")
-state_dict = load_file(training_args.output_dir)
-model.load_state_dict(state_dict, strict=False) # only load lora and memory token embeddings
+# state_dict = load_file(training_args.output_dir)
+model.load_state_dict(torch.load("model_weights.pth"), strict=False) # only load lora and memory token embeddings
 
 model = model.to(device)
 

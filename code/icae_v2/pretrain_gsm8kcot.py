@@ -3,10 +3,11 @@ import transformers
 from dataclasses import dataclass, field
 from typing import Optional
 from datasets import load_dataset
-from training_utils import pretrain_tokenize_function
 from peft import (
     LoraConfig,
 )
+
+from training_utils import pretrain_tokenize_function, DataCollatorForDynamicPadding, train_model
 from modeling_icae_multi_span import ICAE
 
 import warnings
@@ -19,6 +20,10 @@ class ModelArguments:
     lora_r: int = field(
         default=128,
         metadata={"help": "lora rank"}
+    )
+    lora_alpha: int = field(
+        default=32,
+        metadata={"help": "lora alpha"}
     )
     lora_dropout: float = field(
         default=0.05,
@@ -44,7 +49,7 @@ class TrainingArguments(transformers.TrainingArguments):
     )
     fixed_mem_size: int = field(
         default=128,
-        metadata={"help": "Enalbing the fixed mem size."},
+        metadata={"help": "Enabling the fixed mem size."},
     )
     mean_compression_rate: int = field(
         default=4,
@@ -70,7 +75,21 @@ class TrainingArguments(transformers.TrainingArguments):
         default="",
         metadata={"help": "The checkpoint that should be restored from for fine-tuning"}
     )
-
+    per_device_train_batch_size: int = field(
+        default=1,
+        metadata={"help": "The batch size per GPU/XPU/TPU/MPS/NPU core/CPU for training."}
+    )
+    per_device_eval_batch_size: int = field(
+        default=1,
+        metadata={"help": "The batch size per GPU/XPU/TPU/MPS/NPU core/CPU for evaluation."}
+    )
+    max_steps: int = field(
+        default=20
+    )
+    save_strategy: str = field(
+        default="no"
+    )
+    
 
 def main():    
     parser = transformers.HfArgumentParser((ModelArguments, DataArguments, TrainingArguments))
@@ -87,23 +106,29 @@ def main():
     
     lora_config = LoraConfig(
         r=model_args.lora_r,
-        lora_alpha=32,
-        lora_dropout=0.05,
+        lora_alpha=model_args.lora_alpha,
+        lora_dropout=model_args.lora_dropout,
         bias="none",
         task_type="CAUSAL_LM"
     )
 
     print("Loading model...")
-    model = ICAE(model_args, training_args, lora_config)
+    model = ICAE(model_args, training_args, lora_config).to("cuda")
     print("Model loaded successfully...")
     
     memory_size = training_args.fixed_mem_size
     MEM_TOKENS = list(range(model.vocab_size, model.vocab_size + memory_size))
 
     print("Tokenizing train/eval datasets...")
-    train_dataset = train_dataset.map(pretrain_tokenize_function, batched=True, batch_size=1, fn_kwargs={"model": model, "mem": MEM_TOKENS, "lm_ratio": training_args.lm_ratio})
+    train_dataset = train_dataset.map(pretrain_tokenize_function, batched=True, batch_size=64, fn_kwargs={"model": model, "mem": MEM_TOKENS, "lm_ratio": training_args.lm_ratio})
     eval_dataset = eval_dataset.map(pretrain_tokenize_function, batched=True, fn_kwargs={"model": model, "mem": MEM_TOKENS})
     print("Finished tokenizing train/eval datasets...")
+
+    data_collator = DataCollatorForDynamicPadding(model.pad_token_id)
+
+    print("Training model...")
+    train_model(model, train_dataset, eval_dataset, training_args, data_collator)
+    print("Finished training...")
 
 # model_args.model_name_or_path = "meta-llama/Llama-3.2-1B"
 # training_args.bf16 = True
