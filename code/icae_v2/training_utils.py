@@ -8,8 +8,10 @@ import math
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-def train_model(model, train_dataset, eval_dataset, training_args, data_collator=None):
+os.environ["WANDB_PROJECT"] = "icae"  # name your W&B project
 
+def train_model(model, train_dataset, eval_dataset, training_args, data_collator=None):
+ 
     last_checkpoint = None
     if os.path.isdir(training_args.output_dir) and not training_args.overwrite_output_dir:
         last_checkpoint = get_last_checkpoint(training_args.output_dir)
@@ -31,13 +33,20 @@ def train_model(model, train_dataset, eval_dataset, training_args, data_collator
     local_rank = int(os.getenv('LOCAL_RANK', '0'))
     if local_rank == 0:
         print(training_args)
-
+    
+    # wandb.init(
+    #     project="amazon_sentiment_analysis",
+    #     name="bert-base-high-lr",
+    #     tags=["baseline", "high-lr"],
+    #     group="bert",
+    # )
+    
     trainer = Trainer(
         model=model,
         args=training_args,
         train_dataset=train_dataset,
         eval_dataset=eval_dataset,
-        data_collator=data_collator
+        data_collator=data_collator,
     )
 
     checkpoint = None
@@ -56,10 +65,7 @@ def train_model(model, train_dataset, eval_dataset, training_args, data_collator
     trainer.log_metrics("eval", metrics)
     trainer.save_metrics("eval", metrics)
 
-    torch.save(trainer.model.state_dict(), "model_weights.pth")
-    
-
-    
+    torch.save(trainer.model.state_dict(), f"{training_args.output_dir}/model_weights.pth")
 
 
 def text_extraction(input_ids, length, lm_ratio=0.0):

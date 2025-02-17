@@ -4,3 +4,4 @@ peft
 tf-keras
 ipywidgets
 flash-attn
+wandb

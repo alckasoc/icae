@@ -1,0 +1,46 @@
+{
+  "os":  "Linux-5.15.0-124-generic-x86_64-with-glibc2.35",
+  "python":  "CPython 3.11.8",
+  "startedAt":  "2025-02-17T09:05:54.763143Z",
+  "args":  [
+    "--output_dir",
+    "./output"
+  ],
+  "program":  "/home/jovyan/work/icae/code/icae_v2/pretrain_gsm8kcot.py",
+  "codePath":  "code/icae_v2/pretrain_gsm8kcot.py",
+  "git":  {
+    "remote":  "https://github.com/alckasoc/icae",
+    "commit":  "058eeb425efbd6e143d86aeb51a530e97cce5300"
+  },
+  "email":  "tuvincent0106@gmail.com",
+  "root":  "/home/jovyan/work/icae/code/icae_v2",
+  "host":  "80f84540ae5d",
+  "executable":  "/opt/conda/bin/python",
+  "codePathLocal":  "pretrain_gsm8kcot.py",
+  "cpu_count":  10,
+  "cpu_count_logical":  10,
+  "gpu":  "NVIDIA RTX 6000 Ada Generation",
+  "gpu_count":  1,
+  "disk":  {
+    "/":  {
+      "total":  "51835101184",
+      "used":  "40061591552"
+    }
+  },
+  "memory":  {
+    "total":  "63175315456"
+  },
+  "cpu":  {
+    "count":  10,
+    "countLogical":  10
+  },
+  "gpu_nvidia":  [
+    {
+      "name":  "NVIDIA RTX 6000 Ada Generation",
+      "memoryTotal":  "51527024640",
+      "cudaCores":  18176,
+      "architecture":  "Ada"
+    }
+  ],
+  "cudaVersion":  "12.4"
+}

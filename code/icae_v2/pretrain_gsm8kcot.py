@@ -83,11 +83,20 @@ class TrainingArguments(transformers.TrainingArguments):
         default=1,
         metadata={"help": "The batch size per GPU/XPU/TPU/MPS/NPU core/CPU for evaluation."}
     )
+    report_to: str = field(
+        default="wandb"
+    )
     max_steps: int = field(
         default=20
     )
     save_strategy: str = field(
         default="no"
+    )
+    logging_strategy: str = field(
+        default="steps"
+    )
+    logging_steps: int = field(
+        default=1
     )
     
 
@@ -100,8 +109,8 @@ def main():
     train_dataset = ds["train"]
     eval_dataset = ds["test"]
 
-    train_dataset = train_dataset.map(lambda example: {**example, "text": f"{example['question']}\n{example['response']}"})
-    eval_dataset = eval_dataset.map(lambda example: {**example, "text": f"{example['question']}\n{example['response']}"})
+    train_dataset = train_dataset.map(lambda example: {**example, "text": f"{example['question']}\n{example['response']}"}).shuffle(seed=42)
+    eval_dataset = eval_dataset.map(lambda example: {**example, "text": f"{example['question']}\n{example['response']}"}).shuffle(seed=42)
     print("Dataset loaded successfully...")
     
     lora_config = LoraConfig(
@@ -123,6 +132,12 @@ def main():
     train_dataset = train_dataset.map(pretrain_tokenize_function, batched=True, batch_size=64, fn_kwargs={"model": model, "mem": MEM_TOKENS, "lm_ratio": training_args.lm_ratio})
     eval_dataset = eval_dataset.map(pretrain_tokenize_function, batched=True, fn_kwargs={"model": model, "mem": MEM_TOKENS})
     print("Finished tokenizing train/eval datasets...")
+
+    ### OVERFIT TO 1 EXAMPLE ###
+    train_dataset = train_dataset.select([0])
+    eval_dataset = eval_dataset.select([0])
+    print("train_dataset overfit example: ", train_dataset[0]['question'])
+    ############################
 
     data_collator = DataCollatorForDynamicPadding(model.pad_token_id)
 
