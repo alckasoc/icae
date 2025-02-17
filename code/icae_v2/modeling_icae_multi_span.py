@@ -99,12 +99,12 @@ class ICAE(torch.nn.Module):
         self.model_args = model_args
         self.training_args = training_args
         self.model_name = model_args.model_name_or_path
-        self.icae = AutoModelForCausalLM.from_pretrained(self.model_name, torch_dtype=torch.float16 if training_args.bf16 is False else torch.bfloat16, use_flash_attention_2=True, resume_download=True)
+        self.icae = AutoModelForCausalLM.from_pretrained(self.model_name, torch_dtype=torch.bfloat16, attn_implementation="flash_attention_2", resume_download=True)
         
         self.training = self.model_args.train    
         
         if self.training:    # indepedent model for gradient checkpointing
-            self.decoder = AutoModelForCausalLM.from_pretrained(self.model_name, torch_dtype=torch.float16 if training_args.bf16 is False else torch.bfloat16, use_flash_attention_2=True, resume_download=True)
+            self.decoder = AutoModelForCausalLM.from_pretrained(self.model_name, torch_dtype=torch.bfloat16, attn_implementation="flash_attention_2", resume_download=True)
 
         self.vocab_size = self.icae.config.vocab_size + 1    # [PAD] token
         self.pad_token_id = self.vocab_size - 1
