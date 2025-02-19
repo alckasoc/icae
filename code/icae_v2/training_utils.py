@@ -2,15 +2,81 @@ from transformers import Trainer
 import os
 import torch
 import random
+import re
 
 from transformers.trainer_utils import get_last_checkpoint
 import math
+import wandb
+from peft import (
+    LoraConfig,
+)
+from tqdm import tqdm
+from modeling_icae_multi_span import ICAE
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-os.environ["WANDB_PROJECT"] = "icae"  # name your W&B project
+def run_inference(model, lines):
+    model.eval()
+    outputs = []
+    print("Running inference")
+    with torch.no_grad():
+        for line in tqdm(lines):
+            print("=========================== START ============================")
+            print("Current line: ", line)
+            # Tokenize input text
+            tokenized_text = model.tokenizer(line, truncation=True,
+                                          max_length=5120, padding=False,
+                                          return_attention_mask=False)
+            # Generate compressed outputs
+            input_ids = torch.LongTensor([tokenized_text['input_ids']]).to(device)
+            print("input_ids shape: ", input_ids.size())
+            memory_slots = model._compress(input_ids)
+            print("memory_slots shape: ", memory_slots.size())
+            
+            # prompt_output = model.tokenizer(data['prompt'], add_special_tokens=False, padding=False)
+            prompt_ids = torch.LongTensor([[model.ae_token_id]]).to(device)
+            print("prompt_ids shape: ", prompt_ids.size())
 
-def train_model(model, train_dataset, eval_dataset, training_args, data_collator=None):
+            prompt_answer_embs = model.tokens_to_embeddings(prompt_ids)
+            print("prompt_answer_embs shape: ", prompt_answer_embs.size())
+
+            memory_slots = memory_slots.to(prompt_answer_embs)
+                        
+            # Concatenate and clone input embeddings
+            decoder_input_embeddings = torch.cat((memory_slots.unsqueeze(0), prompt_answer_embs), dim=1)
+            print("decoder_input_embeddings shape: ", decoder_input_embeddings.size())
+
+            output = decoder_input_embeddings.clone()
+            print("output shape: ", output.size())
+
+            generate_text = []
+            past_key_values = None
+
+            # Generate text output
+            for i in range(512):
+                with model.icae.disable_adapter():   # no independent decoder; use self.icae
+                    out = model.icae(inputs_embeds=output, past_key_values=past_key_values, use_cache=True)
+                logit = out.logits[:, -1, :model.vocab_size-1]
+                past_key_values = out.past_key_values
+
+                next_token_id = torch.argmax(logit, dim=-1)
+                # print(next_token_id)
+                
+                if next_token_id.item() == 2:   # eos
+                    break
+
+                output = model.icae.get_base_model().model.embed_tokens(next_token_id).unsqueeze(1).to(device)
+                generate_text.append(next_token_id.item())
+
+            generated_text = model.tokenizer.decode(generate_text)
+            outputs.append(generated_text)
+
+            print("=========================== END ============================")
+
+    return outputs
+
+
+def train_model(model, train_dataset, eval_dataset, model_args, data_args, training_args, lines, data_collator=None):
  
     last_checkpoint = None
     if os.path.isdir(training_args.output_dir) and not training_args.overwrite_output_dir:
@@ -34,12 +100,9 @@ def train_model(model, train_dataset, eval_dataset, training_args, data_collator
     if local_rank == 0:
         print(training_args)
     
-    # wandb.init(
-    #     project="amazon_sentiment_analysis",
-    #     name="bert-base-high-lr",
-    #     tags=["baseline", "high-lr"],
-    #     group="bert",
-    # )
+    run = wandb.init(
+        project="icae",
+    )
     
     trainer = Trainer(
         model=model,
@@ -67,6 +130,40 @@ def train_model(model, train_dataset, eval_dataset, training_args, data_collator
 
     torch.save(trainer.model.state_dict(), f"{training_args.output_dir}/model_weights.pth")
 
+    # EVALUATION
+    lora_config = LoraConfig(
+        r=model_args.lora_r,
+        lora_alpha=model_args.lora_alpha,
+        lora_dropout=model_args.lora_dropout,
+        bias="none",
+        task_type="CAUSAL_LM"
+    )
+    model = ICAE(model_args, training_args, lora_config)
+    print(f"Loading trained checkpoint from {training_args.output_dir}")
+    model.load_state_dict(torch.load(f"{training_args.output_dir}/model_weights.pth"), strict=False)
+    model = model.to(device)
+
+    outputs = run_inference(model, lines)
+
+    my_outputs = []
+    for i, j in zip(lines, outputs):
+        print(i)
+        print(j)
+        print("=========================================================================")
+        my_outputs.append([i, j])
+        
+    my_table = wandb.Table(
+        columns=["input", "output"],
+        data=my_outputs
+    )
+
+    run.log(
+        {
+            "table": my_table
+        }
+    )
+    
+    run.finish()
 
 def text_extraction(input_ids, length, lm_ratio=0.0):
     
@@ -94,16 +191,19 @@ def text_extraction(input_ids, length, lm_ratio=0.0):
         return input_ids[random_start: random_start+length], input_ids[random_start+length:]
 
 
+
+
+
 def pretrain_tokenize_function(examples, model, mem, lm_ratio=0.0):
     text_output = model.tokenizer(examples["text"], truncation=False, padding=False, return_attention_mask=False)
+    reasoning_trace_output = model.tokenizer(examples["reasoning_trace"], truncation=False, padding=False, return_attention_mask=False)
     text_output['prompt_answer_ids'] = []
     text_output['labels'] = []
-
+    
     max_len = model.training_args.model_max_length  # heuristic
 
     # Each data point in the batch can be AE or LM.
-    for idx in range(len(text_output["input_ids"])):
-        
+    for idx in range(len(text_output["input_ids"])):        
         ae = True
         a, b = text_extraction(text_output["input_ids"][idx], max_len, lm_ratio=lm_ratio)
         length_a = len(a)
@@ -119,9 +219,9 @@ def pretrain_tokenize_function(examples, model, mem, lm_ratio=0.0):
 
         # decoder part: note that in v2, we add mem_tokens to the prompt_ids for easy implementation; which is different from v1 implementation where mem tokens are not in the prompt_ids
         if ae:  # autoencoding objective
-            # Why is it mem[0]?
+            # Why is it mem[0]? Filler memory token, will be overwritten during forward pass.
             prompt_ids = [mem[0]] * total_mem_length + [model.ae_token_id]
-            answer_ids = a + [model.eos_id]    # if ae, eos token
+            answer_ids = reasoning_trace_output['input_ids'][idx] + [model.eos_id]    # if ae, eos token
         else:   # lm objective
             prompt_ids = [mem[0]] * total_mem_length
             if model.training_args.add_special_token_for_lm:

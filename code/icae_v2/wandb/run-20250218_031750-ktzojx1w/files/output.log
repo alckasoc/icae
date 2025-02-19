@@ -1,0 +1,572 @@
+Loaded from the checkpoint: None
+[34m[1mwandb[0m: [33mWARNING[0m The `run_name` is currently set to the same value as `TrainingArguments.output_dir`. If this was not intended, please specify a different run name by setting the `TrainingArguments.run_name` parameter.
+  0%|                                                                 | 0/20 [00:00<?, ?it/s]`use_cache=True` is incompatible with gradient checkpointing. Setting `use_cache=False`.
+input_ids shape:  torch.Size([1, 243])
+prompt_answer_ids shape:  torch.Size([1, 246])
+labels shape:  torch.Size([1, 246])
+num_segments:  1
+segment_length:  243
+prompt_answer_embs shape:  torch.Size([1, 246, 2048])
+max_compressed_length:  1
+compress_outputs shape:  torch.Size([1, 2048])
+===============Segment 0=======================
+start_idx: 0 | end_idx: 243
+segment_input_ids shape:  torch.Size([1, 243])
+append_sequence shape:  torch.Size([1, 1])
+segment_input_ids shape after concat:  torch.Size([1, 244])
+mem_flag shape:  torch.Size([1, 244])
+segment_input_embedding shape:  torch.Size([1, 244, 2048])
+Populated segment_input_embedding memory tokens
+segment_compress_outputs (last hidden state) shape:  torch.Size([1, 244, 2048])
+Filled in compressed memory for memory segment 0.
+===============Segment 0 END=======================
+decoder_mem_flag shape:  torch.Size([1, 246])
+Populated decoder memory tokens with compressed outputs.
+Populated decoder special memory tokens.
+decoder_outputs logits shape:  torch.Size([1, 246, 128256])
+effective_logits shape:  torch.Size([245, 128256])
+target_ids shape:  torch.Size([245])
+ 10%|█████▋                                                   | 2/20 [00:01<00:09,  1.97it/s]
+{'loss': 1.5625, 'grad_norm': 0.03687639161944389, 'learning_rate': 4.75e-05, 'epoch': 1.0}
+input_ids shape:  torch.Size([1, 243])
+prompt_answer_ids shape:  torch.Size([1, 246])
+labels shape:  torch.Size([1, 246])
+num_segments:  1
+segment_length:  243
+prompt_answer_embs shape:  torch.Size([1, 246, 2048])
+max_compressed_length:  1
+compress_outputs shape:  torch.Size([1, 2048])
+===============Segment 0=======================
+start_idx: 0 | end_idx: 243
+segment_input_ids shape:  torch.Size([1, 243])
+append_sequence shape:  torch.Size([1, 1])
+segment_input_ids shape after concat:  torch.Size([1, 244])
+mem_flag shape:  torch.Size([1, 244])
+segment_input_embedding shape:  torch.Size([1, 244, 2048])
+Populated segment_input_embedding memory tokens
+segment_compress_outputs (last hidden state) shape:  torch.Size([1, 244, 2048])
+Filled in compressed memory for memory segment 0.
+===============Segment 0 END=======================
+decoder_mem_flag shape:  torch.Size([1, 246])
+Populated decoder memory tokens with compressed outputs.
+Populated decoder special memory tokens.
+decoder_outputs logits shape:  torch.Size([1, 246, 128256])
+effective_logits shape:  torch.Size([245, 128256])
+target_ids shape:  torch.Size([245])
+{'loss': 1.5625, 'grad_norm': 0.03669623285531998, 'learning_rate': 4.5e-05, 'epoch': 2.0}
+input_ids shape:  torch.Size([1, 243])
+prompt_answer_ids shape:  torch.Size([1, 246])
+labels shape:  torch.Size([1, 246])
+num_segments:  1
+segment_length:  243
+prompt_answer_embs shape:  torch.Size([1, 246, 2048])
+max_compressed_length:  1
+compress_outputs shape:  torch.Size([1, 2048])
+===============Segment 0=======================
+start_idx: 0 | end_idx: 243
+segment_input_ids shape:  torch.Size([1, 243])
+append_sequence shape:  torch.Size([1, 1])
+segment_input_ids shape after concat:  torch.Size([1, 244])
+mem_flag shape:  torch.Size([1, 244])
+segment_input_embedding shape:  torch.Size([1, 244, 2048])
+Populated segment_input_embedding memory tokens
+segment_compress_outputs (last hidden state) shape:  torch.Size([1, 244, 2048])
+Filled in compressed memory for memory segment 0.
+===============Segment 0 END=======================
+decoder_mem_flag shape:  torch.Size([1, 246])
+Populated decoder memory tokens with compressed outputs.
+Populated decoder special memory tokens.
+decoder_outputs logits shape:  torch.Size([1, 246, 128256])
+effective_logits shape:  torch.Size([245, 128256])
+target_ids shape:  torch.Size([245])
+{'loss': 1.5547, 'grad_norm': 0.03789232298731804, 'learning_rate': 4.25e-05, 'epoch': 3.0}
+input_ids shape:  torch.Size([1, 243])
+prompt_answer_ids shape:  torch.Size([1, 246])
+labels shape:  torch.Size([1, 246])
+num_segments:  1
+segment_length:  243
+prompt_answer_embs shape:  torch.Size([1, 246, 2048])
+max_compressed_length:  1
+compress_outputs shape:  torch.Size([1, 2048])
+===============Segment 0=======================
+start_idx: 0 | end_idx: 243
+segment_input_ids shape:  torch.Size([1, 243])
+append_sequence shape:  torch.Size([1, 1])
+segment_input_ids shape after concat:  torch.Size([1, 244])
+mem_flag shape:  torch.Size([1, 244])
+segment_input_embedding shape:  torch.Size([1, 244, 2048])
+Populated segment_input_embedding memory tokens
+segment_compress_outputs (last hidden state) shape:  torch.Size([1, 244, 2048])
+Filled in compressed memory for memory segment 0.
+===============Segment 0 END=======================
+decoder_mem_flag shape:  torch.Size([1, 246])
+Populated decoder memory tokens with compressed outputs.
+Populated decoder special memory tokens.
+decoder_outputs logits shape:  torch.Size([1, 246, 128256])
+effective_logits shape:  torch.Size([245, 128256])
+target_ids shape:  torch.Size([245])
+{'loss': 1.5547, 'grad_norm': 0.03796323388814926, 'learning_rate': 4e-05, 'epoch': 4.0}
+input_ids shape:  torch.Size([1, 243])
+prompt_answer_ids shape:  torch.Size([1, 246])
+labels shape:  torch.Size([1, 246])
+num_segments:  1
+segment_length:  243
+prompt_answer_embs shape:  torch.Size([1, 246, 2048])
+max_compressed_length:  1
+compress_outputs shape:  torch.Size([1, 2048])
+===============Segment 0=======================
+start_idx: 0 | end_idx: 243
+segment_input_ids shape:  torch.Size([1, 243])
+append_sequence shape:  torch.Size([1, 1])
+segment_input_ids shape after concat:  torch.Size([1, 244])
+mem_flag shape:  torch.Size([1, 244])
+segment_input_embedding shape:  torch.Size([1, 244, 2048])
+Populated segment_input_embedding memory tokens
+segment_compress_outputs (last hidden state) shape:  torch.Size([1, 244, 2048])
+Filled in compressed memory for memory segment 0.
+===============Segment 0 END=======================
+decoder_mem_flag shape:  torch.Size([1, 246])
+Populated decoder memory tokens with compressed outputs.
+Populated decoder special memory tokens.
+decoder_outputs logits shape:  torch.Size([1, 246, 128256])
+effective_logits shape:  torch.Size([245, 128256])
+target_ids shape:  torch.Size([245])
+{'loss': 1.5547, 'grad_norm': 0.03898976370692253, 'learning_rate': 3.7500000000000003e-05, 'epoch': 5.0}
+input_ids shape:  torch.Size([1, 243])
+prompt_answer_ids shape:  torch.Size([1, 246])
+labels shape:  torch.Size([1, 246])
+num_segments:  1
+segment_length:  243
+prompt_answer_embs shape:  torch.Size([1, 246, 2048])
+max_compressed_length:  1
+compress_outputs shape:  torch.Size([1, 2048])
+===============Segment 0=======================
+start_idx: 0 | end_idx: 243
+segment_input_ids shape:  torch.Size([1, 243])
+append_sequence shape:  torch.Size([1, 1])
+segment_input_ids shape after concat:  torch.Size([1, 244])
+mem_flag shape:  torch.Size([1, 244])
+segment_input_embedding shape:  torch.Size([1, 244, 2048])
+Populated segment_input_embedding memory tokens
+segment_compress_outputs (last hidden state) shape:  torch.Size([1, 244, 2048])
+Filled in compressed memory for memory segment 0.
+===============Segment 0 END=======================
+decoder_mem_flag shape:  torch.Size([1, 246])
+Populated decoder memory tokens with compressed outputs.
+Populated decoder special memory tokens.
+decoder_outputs logits shape:  torch.Size([1, 246, 128256])
+effective_logits shape:  torch.Size([245, 128256])
+target_ids shape:  torch.Size([245])
+{'loss': 1.5547, 'grad_norm': 0.040304116904735565, 'learning_rate': 3.5e-05, 'epoch': 6.0}
+input_ids shape:  torch.Size([1, 243])
+prompt_answer_ids shape:  torch.Size([1, 246])
+labels shape:  torch.Size([1, 246])
+num_segments:  1
+segment_length:  243
+prompt_answer_embs shape:  torch.Size([1, 246, 2048])
+max_compressed_length:  1
+compress_outputs shape:  torch.Size([1, 2048])
+===============Segment 0=======================
+start_idx: 0 | end_idx: 243
+segment_input_ids shape:  torch.Size([1, 243])
+append_sequence shape:  torch.Size([1, 1])
+segment_input_ids shape after concat:  torch.Size([1, 244])
+mem_flag shape:  torch.Size([1, 244])
+segment_input_embedding shape:  torch.Size([1, 244, 2048])
+Populated segment_input_embedding memory tokens
+segment_compress_outputs (last hidden state) shape:  torch.Size([1, 244, 2048])
+Filled in compressed memory for memory segment 0.
+===============Segment 0 END=======================
+decoder_mem_flag shape:  torch.Size([1, 246])
+Populated decoder memory tokens with compressed outputs.
+Populated decoder special memory tokens.
+decoder_outputs logits shape:  torch.Size([1, 246, 128256])
+effective_logits shape:  torch.Size([245, 128256])
+target_ids shape:  torch.Size([245])
+{'loss': 1.5469, 'grad_norm': 0.04110177606344223, 'learning_rate': 3.2500000000000004e-05, 'epoch': 7.0}
+input_ids shape:  torch.Size([1, 243])
+prompt_answer_ids shape:  torch.Size([1, 246])
+labels shape:  torch.Size([1, 246])
+num_segments:  1
+segment_length:  243
+prompt_answer_embs shape:  torch.Size([1, 246, 2048])
+max_compressed_length:  1
+compress_outputs shape:  torch.Size([1, 2048])
+===============Segment 0=======================
+start_idx: 0 | end_idx: 243
+segment_input_ids shape:  torch.Size([1, 243])
+append_sequence shape:  torch.Size([1, 1])
+segment_input_ids shape after concat:  torch.Size([1, 244])
+mem_flag shape:  torch.Size([1, 244])
+segment_input_embedding shape:  torch.Size([1, 244, 2048])
+Populated segment_input_embedding memory tokens
+segment_compress_outputs (last hidden state) shape:  torch.Size([1, 244, 2048])
+Filled in compressed memory for memory segment 0.
+===============Segment 0 END=======================
+decoder_mem_flag shape:  torch.Size([1, 246])
+Populated decoder memory tokens with compressed outputs.
+Populated decoder special memory tokens.
+decoder_outputs logits shape:  torch.Size([1, 246, 128256])
+effective_logits shape:  torch.Size([245, 128256])
+target_ids shape:  torch.Size([245])
+{'loss': 1.5469, 'grad_norm': 0.04197651520371437, 'learning_rate': 3e-05, 'epoch': 8.0}
+input_ids shape:  torch.Size([1, 243])
+prompt_answer_ids shape:  torch.Size([1, 246])
+labels shape:  torch.Size([1, 246])
+num_segments:  1
+segment_length:  243
+prompt_answer_embs shape:  torch.Size([1, 246, 2048])
+max_compressed_length:  1
+compress_outputs shape:  torch.Size([1, 2048])
+===============Segment 0=======================
+start_idx: 0 | end_idx: 243
+segment_input_ids shape:  torch.Size([1, 243])
+append_sequence shape:  torch.Size([1, 1])
+segment_input_ids shape after concat:  torch.Size([1, 244])
+mem_flag shape:  torch.Size([1, 244])
+segment_input_embedding shape:  torch.Size([1, 244, 2048])
+Populated segment_input_embedding memory tokens
+segment_compress_outputs (last hidden state) shape:  torch.Size([1, 244, 2048])
+Filled in compressed memory for memory segment 0.
+===============Segment 0 END=======================
+decoder_mem_flag shape:  torch.Size([1, 246])
+Populated decoder memory tokens with compressed outputs.
+Populated decoder special memory tokens.
+decoder_outputs logits shape:  torch.Size([1, 246, 128256])
+effective_logits shape:  torch.Size([245, 128256])
+target_ids shape:  torch.Size([245])
+{'loss': 1.5547, 'grad_norm': 0.043270159512758255, 'learning_rate': 2.7500000000000004e-05, 'epoch': 9.0}
+input_ids shape:  torch.Size([1, 243])
+prompt_answer_ids shape:  torch.Size([1, 246])
+labels shape:  torch.Size([1, 246])
+num_segments:  1
+segment_length:  243
+prompt_answer_embs shape:  torch.Size([1, 246, 2048])
+max_compressed_length:  1
+compress_outputs shape:  torch.Size([1, 2048])
+===============Segment 0=======================
+start_idx: 0 | end_idx: 243
+segment_input_ids shape:  torch.Size([1, 243])
+append_sequence shape:  torch.Size([1, 1])
+segment_input_ids shape after concat:  torch.Size([1, 244])
+mem_flag shape:  torch.Size([1, 244])
+segment_input_embedding shape:  torch.Size([1, 244, 2048])
+Populated segment_input_embedding memory tokens
+segment_compress_outputs (last hidden state) shape:  torch.Size([1, 244, 2048])
+Filled in compressed memory for memory segment 0.
+===============Segment 0 END=======================
+decoder_mem_flag shape:  torch.Size([1, 246])
+Populated decoder memory tokens with compressed outputs.
+Populated decoder special memory tokens.
+decoder_outputs logits shape:  torch.Size([1, 246, 128256])
+effective_logits shape:  torch.Size([245, 128256])
+target_ids shape:  torch.Size([245])
+{'loss': 1.5469, 'grad_norm': 0.04461980238556862, 'learning_rate': 2.5e-05, 'epoch': 10.0}
+input_ids shape:  torch.Size([1, 243])
+prompt_answer_ids shape:  torch.Size([1, 246])
+labels shape:  torch.Size([1, 246])
+num_segments:  1
+segment_length:  243
+prompt_answer_embs shape:  torch.Size([1, 246, 2048])
+max_compressed_length:  1
+compress_outputs shape:  torch.Size([1, 2048])
+===============Segment 0=======================
+start_idx: 0 | end_idx: 243
+segment_input_ids shape:  torch.Size([1, 243])
+append_sequence shape:  torch.Size([1, 1])
+segment_input_ids shape after concat:  torch.Size([1, 244])
+mem_flag shape:  torch.Size([1, 244])
+segment_input_embedding shape:  torch.Size([1, 244, 2048])
+Populated segment_input_embedding memory tokens
+segment_compress_outputs (last hidden state) shape:  torch.Size([1, 244, 2048])
+Filled in compressed memory for memory segment 0.
+===============Segment 0 END=======================
+decoder_mem_flag shape:  torch.Size([1, 246])
+Populated decoder memory tokens with compressed outputs.
+Populated decoder special memory tokens.
+decoder_outputs logits shape:  torch.Size([1, 246, 128256])
+effective_logits shape:  torch.Size([245, 128256])
+target_ids shape:  torch.Size([245])
+{'loss': 1.5547, 'grad_norm': 0.045372553169727325, 'learning_rate': 2.25e-05, 'epoch': 11.0}
+input_ids shape:  torch.Size([1, 243])
+prompt_answer_ids shape:  torch.Size([1, 246])
+labels shape:  torch.Size([1, 246])
+num_segments:  1
+segment_length:  243
+prompt_answer_embs shape:  torch.Size([1, 246, 2048])
+max_compressed_length:  1
+compress_outputs shape:  torch.Size([1, 2048])
+===============Segment 0=======================
+start_idx: 0 | end_idx: 243
+segment_input_ids shape:  torch.Size([1, 243])
+append_sequence shape:  torch.Size([1, 1])
+segment_input_ids shape after concat:  torch.Size([1, 244])
+mem_flag shape:  torch.Size([1, 244])
+segment_input_embedding shape:  torch.Size([1, 244, 2048])
+Populated segment_input_embedding memory tokens
+segment_compress_outputs (last hidden state) shape:  torch.Size([1, 244, 2048])
+Filled in compressed memory for memory segment 0.
+===============Segment 0 END=======================
+decoder_mem_flag shape:  torch.Size([1, 246])
+Populated decoder memory tokens with compressed outputs.
+Populated decoder special memory tokens.
+decoder_outputs logits shape:  torch.Size([1, 246, 128256])
+effective_logits shape:  torch.Size([245, 128256])
+target_ids shape:  torch.Size([245])
+{'loss': 1.5469, 'grad_norm': 0.046929698437452316, 'learning_rate': 2e-05, 'epoch': 12.0}
+input_ids shape:  torch.Size([1, 243])
+prompt_answer_ids shape:  torch.Size([1, 246])
+labels shape:  torch.Size([1, 246])
+num_segments:  1
+segment_length:  243
+prompt_answer_embs shape:  torch.Size([1, 246, 2048])
+max_compressed_length:  1
+compress_outputs shape:  torch.Size([1, 2048])
+===============Segment 0=======================
+start_idx: 0 | end_idx: 243
+segment_input_ids shape:  torch.Size([1, 243])
+append_sequence shape:  torch.Size([1, 1])
+segment_input_ids shape after concat:  torch.Size([1, 244])
+mem_flag shape:  torch.Size([1, 244])
+segment_input_embedding shape:  torch.Size([1, 244, 2048])
+Populated segment_input_embedding memory tokens
+segment_compress_outputs (last hidden state) shape:  torch.Size([1, 244, 2048])
+Filled in compressed memory for memory segment 0.
+===============Segment 0 END=======================
+decoder_mem_flag shape:  torch.Size([1, 246])
+Populated decoder memory tokens with compressed outputs.
+Populated decoder special memory tokens.
+decoder_outputs logits shape:  torch.Size([1, 246, 128256])
+effective_logits shape:  torch.Size([245, 128256])
+target_ids shape:  torch.Size([245])
+{'loss': 1.5469, 'grad_norm': 0.04787739738821983, 'learning_rate': 1.75e-05, 'epoch': 13.0}
+input_ids shape:  torch.Size([1, 243])
+prompt_answer_ids shape:  torch.Size([1, 246])
+labels shape:  torch.Size([1, 246])
+num_segments:  1
+segment_length:  243
+prompt_answer_embs shape:  torch.Size([1, 246, 2048])
+max_compressed_length:  1
+compress_outputs shape:  torch.Size([1, 2048])
+===============Segment 0=======================
+start_idx: 0 | end_idx: 243
+segment_input_ids shape:  torch.Size([1, 243])
+append_sequence shape:  torch.Size([1, 1])
+segment_input_ids shape after concat:  torch.Size([1, 244])
+mem_flag shape:  torch.Size([1, 244])
+segment_input_embedding shape:  torch.Size([1, 244, 2048])
+Populated segment_input_embedding memory tokens
+segment_compress_outputs (last hidden state) shape:  torch.Size([1, 244, 2048])
+Filled in compressed memory for memory segment 0.
+===============Segment 0 END=======================
+decoder_mem_flag shape:  torch.Size([1, 246])
+Populated decoder memory tokens with compressed outputs.
+Populated decoder special memory tokens.
+decoder_outputs logits shape:  torch.Size([1, 246, 128256])
+effective_logits shape:  torch.Size([245, 128256])
+target_ids shape:  torch.Size([245])
+{'loss': 1.5469, 'grad_norm': 0.049272045493125916, 'learning_rate': 1.5e-05, 'epoch': 14.0}
+input_ids shape:  torch.Size([1, 243])
+prompt_answer_ids shape:  torch.Size([1, 246])
+labels shape:  torch.Size([1, 246])
+num_segments:  1
+segment_length:  243
+prompt_answer_embs shape:  torch.Size([1, 246, 2048])
+max_compressed_length:  1
+compress_outputs shape:  torch.Size([1, 2048])
+===============Segment 0=======================
+start_idx: 0 | end_idx: 243
+segment_input_ids shape:  torch.Size([1, 243])
+append_sequence shape:  torch.Size([1, 1])
+segment_input_ids shape after concat:  torch.Size([1, 244])
+mem_flag shape:  torch.Size([1, 244])
+segment_input_embedding shape:  torch.Size([1, 244, 2048])
+Populated segment_input_embedding memory tokens
+segment_compress_outputs (last hidden state) shape:  torch.Size([1, 244, 2048])
+Filled in compressed memory for memory segment 0.
+===============Segment 0 END=======================
+decoder_mem_flag shape:  torch.Size([1, 246])
+Populated decoder memory tokens with compressed outputs.
+Populated decoder special memory tokens.
+decoder_outputs logits shape:  torch.Size([1, 246, 128256])
+effective_logits shape:  torch.Size([245, 128256])
+target_ids shape:  torch.Size([245])
+{'loss': 1.5469, 'grad_norm': 0.049961574375629425, 'learning_rate': 1.25e-05, 'epoch': 15.0}
+input_ids shape:  torch.Size([1, 243])
+prompt_answer_ids shape:  torch.Size([1, 246])
+labels shape:  torch.Size([1, 246])
+num_segments:  1
+segment_length:  243
+prompt_answer_embs shape:  torch.Size([1, 246, 2048])
+max_compressed_length:  1
+compress_outputs shape:  torch.Size([1, 2048])
+===============Segment 0=======================
+start_idx: 0 | end_idx: 243
+segment_input_ids shape:  torch.Size([1, 243])
+append_sequence shape:  torch.Size([1, 1])
+segment_input_ids shape after concat:  torch.Size([1, 244])
+mem_flag shape:  torch.Size([1, 244])
+segment_input_embedding shape:  torch.Size([1, 244, 2048])
+Populated segment_input_embedding memory tokens
+segment_compress_outputs (last hidden state) shape:  torch.Size([1, 244, 2048])
+Filled in compressed memory for memory segment 0.
+===============Segment 0 END=======================
+decoder_mem_flag shape:  torch.Size([1, 246])
+Populated decoder memory tokens with compressed outputs.
+Populated decoder special memory tokens.
+decoder_outputs logits shape:  torch.Size([1, 246, 128256])
+effective_logits shape:  torch.Size([245, 128256])
+target_ids shape:  torch.Size([245])
+{'loss': 1.5469, 'grad_norm': 0.0514247752726078, 'learning_rate': 1e-05, 'epoch': 16.0}
+input_ids shape:  torch.Size([1, 243])
+prompt_answer_ids shape:  torch.Size([1, 246])
+labels shape:  torch.Size([1, 246])
+num_segments:  1
+segment_length:  243
+prompt_answer_embs shape:  torch.Size([1, 246, 2048])
+max_compressed_length:  1
+compress_outputs shape:  torch.Size([1, 2048])
+===============Segment 0=======================
+start_idx: 0 | end_idx: 243
+segment_input_ids shape:  torch.Size([1, 243])
+append_sequence shape:  torch.Size([1, 1])
+segment_input_ids shape after concat:  torch.Size([1, 244])
+mem_flag shape:  torch.Size([1, 244])
+segment_input_embedding shape:  torch.Size([1, 244, 2048])
+Populated segment_input_embedding memory tokens
+segment_compress_outputs (last hidden state) shape:  torch.Size([1, 244, 2048])
+Filled in compressed memory for memory segment 0.
+===============Segment 0 END=======================
+decoder_mem_flag shape:  torch.Size([1, 246])
+Populated decoder memory tokens with compressed outputs.
+Populated decoder special memory tokens.
+decoder_outputs logits shape:  torch.Size([1, 246, 128256])
+effective_logits shape:  torch.Size([245, 128256])
+target_ids shape:  torch.Size([245])
+{'loss': 1.5391, 'grad_norm': 0.051535189151763916, 'learning_rate': 7.5e-06, 'epoch': 17.0}
+input_ids shape:  torch.Size([1, 243])
+prompt_answer_ids shape:  torch.Size([1, 246])
+labels shape:  torch.Size([1, 246])
+num_segments:  1
+segment_length:  243
+prompt_answer_embs shape:  torch.Size([1, 246, 2048])
+max_compressed_length:  1
+compress_outputs shape:  torch.Size([1, 2048])
+===============Segment 0=======================
+start_idx: 0 | end_idx: 243
+segment_input_ids shape:  torch.Size([1, 243])
+append_sequence shape:  torch.Size([1, 1])
+segment_input_ids shape after concat:  torch.Size([1, 244])
+mem_flag shape:  torch.Size([1, 244])
+segment_input_embedding shape:  torch.Size([1, 244, 2048])
+Populated segment_input_embedding memory tokens
+segment_compress_outputs (last hidden state) shape:  torch.Size([1, 244, 2048])
+Filled in compressed memory for memory segment 0.
+===============Segment 0 END=======================
+decoder_mem_flag shape:  torch.Size([1, 246])
+Populated decoder memory tokens with compressed outputs.
+Populated decoder special memory tokens.
+decoder_outputs logits shape:  torch.Size([1, 246, 128256])
+effective_logits shape:  torch.Size([245, 128256])
+target_ids shape:  torch.Size([245])
+{'loss': 1.5469, 'grad_norm': 0.0524427630007267, 'learning_rate': 5e-06, 'epoch': 18.0}
+input_ids shape:  torch.Size([1, 243])
+prompt_answer_ids shape:  torch.Size([1, 246])
+labels shape:  torch.Size([1, 246])
+num_segments:  1
+segment_length:  243
+prompt_answer_embs shape:  torch.Size([1, 246, 2048])
+max_compressed_length:  1
+compress_outputs shape:  torch.Size([1, 2048])
+===============Segment 0=======================
+start_idx: 0 | end_idx: 243
+segment_input_ids shape:  torch.Size([1, 243])
+append_sequence shape:  torch.Size([1, 1])
+segment_input_ids shape after concat:  torch.Size([1, 244])
+mem_flag shape:  torch.Size([1, 244])
+segment_input_embedding shape:  torch.Size([1, 244, 2048])
+Populated segment_input_embedding memory tokens
+segment_compress_outputs (last hidden state) shape:  torch.Size([1, 244, 2048])
+Filled in compressed memory for memory segment 0.
+===============Segment 0 END=======================
+decoder_mem_flag shape:  torch.Size([1, 246])
+Populated decoder memory tokens with compressed outputs.
+Populated decoder special memory tokens.
+decoder_outputs logits shape:  torch.Size([1, 246, 128256])
+effective_logits shape:  torch.Size([245, 128256])
+target_ids shape:  torch.Size([245])
+{'loss': 1.5391, 'grad_norm': 0.05240275338292122, 'learning_rate': 2.5e-06, 'epoch': 19.0}
+input_ids shape:  torch.Size([1, 243])
+prompt_answer_ids shape:  torch.Size([1, 246])
+labels shape:  torch.Size([1, 246])
+num_segments:  1
+segment_length:  243
+prompt_answer_embs shape:  torch.Size([1, 246, 2048])
+max_compressed_length:  1
+compress_outputs shape:  torch.Size([1, 2048])
+===============Segment 0=======================
+start_idx: 0 | end_idx: 243
+segment_input_ids shape:  torch.Size([1, 243])
+append_sequence shape:  torch.Size([1, 1])
+segment_input_ids shape after concat:  torch.Size([1, 244])
+mem_flag shape:  torch.Size([1, 244])
+segment_input_embedding shape:  torch.Size([1, 244, 2048])
+Populated segment_input_embedding memory tokens
+segment_compress_outputs (last hidden state) shape:  torch.Size([1, 244, 2048])
+Filled in compressed memory for memory segment 0.
+===============Segment 0 END=======================
+decoder_mem_flag shape:  torch.Size([1, 246])
+Populated decoder memory tokens with compressed outputs.
+Populated decoder special memory tokens.
+decoder_outputs logits shape:  torch.Size([1, 246, 128256])
+effective_logits shape:  torch.Size([245, 128256])
+target_ids shape:  torch.Size([245])
+{'loss': 1.5391, 'grad_norm': 0.05277031287550926, 'learning_rate': 0.0, 'epoch': 20.0}
+{'train_runtime': 5.4866, 'train_samples_per_second': 3.645, 'train_steps_per_second': 3.645, 'train_loss': 1.549609375, 'epoch': 20.0}
+***** train metrics *****
+  epoch                    =       20.0
+  total_flos               =        0GF
+  train_loss               =     1.5496
+  train_runtime            = 0:00:05.48
+  train_samples_per_second =      3.645
+  train_steps_per_second   =      3.645
+input_ids shape:  torch.Size([1, 131])
+prompt_answer_ids shape:  torch.Size([1, 134])
+labels shape:  torch.Size([1, 134])
+num_segments:  1
+segment_length:  131
+prompt_answer_embs shape:  torch.Size([1, 134, 2048])
+max_compressed_length:  1
+compress_outputs shape:  torch.Size([1, 2048])
+===============Segment 0=======================
+start_idx: 0 | end_idx: 131
+segment_input_ids shape:  torch.Size([1, 131])
+append_sequence shape:  torch.Size([1, 1])
+segment_input_ids shape after concat:  torch.Size([1, 132])
+mem_flag shape:  torch.Size([1, 132])
+segment_input_embedding shape:  torch.Size([1, 132, 2048])
+Populated segment_input_embedding memory tokens
+segment_compress_outputs (last hidden state) shape:  torch.Size([1, 132, 2048])
+Filled in compressed memory for memory segment 0.
+===============Segment 0 END=======================
+decoder_mem_flag shape:  torch.Size([1, 134])
+Populated decoder memory tokens with compressed outputs.
+Populated decoder special memory tokens.
+decoder_outputs logits shape:  torch.Size([1, 134, 128261])
+effective_logits shape:  torch.Size([133, 128261])
+target_ids shape:  torch.Size([133])
+100%|████████████████████████████████████████████████████████| 1/1 [00:00<00:00, 1321.04it/s]
+***** eval metrics *****
+  epoch                   =       20.0
+  eval_loss               =     1.6094
+  eval_runtime            = 0:00:00.09
+  eval_samples_per_second =     11.098
+  eval_steps_per_second   =     11.098
+Traceback (most recent call last):
+  File "/home/ubuntu/icae/code/icae_v2/pretrain_gsm8kcot.py", line 168, in <module>
+    main()
+  File "/home/ubuntu/icae/code/icae_v2/pretrain_gsm8kcot.py", line 150, in main
+    train_model(
+  File "/home/ubuntu/icae/code/icae_v2/training_utils.py", line 115, in train_model
+    lora_config = LoraConfig(
+NameError: name 'LoraConfig' is not defined
