@@ -1,0 +1,15 @@
+{"time":"2025-02-20T09:28:12.111485771Z","level":"INFO","msg":"stream: starting","core version":"0.19.6","symlink path":"/home/ubuntu/icae/code/icae_v2/wandb/run-20250220_092811-esf101bu/logs/debug-core.log"}
+{"time":"2025-02-20T09:28:12.219099198Z","level":"INFO","msg":"created new stream","id":"esf101bu"}
+{"time":"2025-02-20T09:28:12.219281838Z","level":"INFO","msg":"stream: started","id":"esf101bu"}
+{"time":"2025-02-20T09:28:12.219324868Z","level":"INFO","msg":"writer: Do: started","stream_id":"esf101bu"}
+{"time":"2025-02-20T09:28:12.219451138Z","level":"INFO","msg":"handler: started","stream_id":"esf101bu"}
+{"time":"2025-02-20T09:28:12.219696708Z","level":"INFO","msg":"sender: started","stream_id":"esf101bu"}
+{"time":"2025-02-20T09:28:12.361684083Z","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-02-20T09:28:13.186004041Z","level":"INFO","msg":"stream: closing","id":"esf101bu"}
+{"time":"2025-02-20T09:28:13.186077381Z","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2025-02-20T09:28:13.187579569Z","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2025-02-20T09:28:13.518779055Z","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-02-20T09:28:13.618339761Z","level":"INFO","msg":"handler: closed","stream_id":"esf101bu"}
+{"time":"2025-02-20T09:28:13.618427281Z","level":"INFO","msg":"sender: closed","stream_id":"esf101bu"}
+{"time":"2025-02-20T09:28:13.618414981Z","level":"INFO","msg":"writer: Close: closed","stream_id":"esf101bu"}
+{"time":"2025-02-20T09:28:13.6185678Z","level":"INFO","msg":"stream: closed","id":"esf101bu"}

@@ -1,0 +1,16 @@
+{"time":"2025-02-20T05:09:11.821570907Z","level":"INFO","msg":"stream: starting","core version":"0.19.6","symlink path":"/home/ubuntu/icae/code/icae_v2/wandb/run-20250220_050911-19nyzksl/logs/debug-core.log"}
+{"time":"2025-02-20T05:09:11.929450579Z","level":"INFO","msg":"created new stream","id":"19nyzksl"}
+{"time":"2025-02-20T05:09:11.929581683Z","level":"INFO","msg":"stream: started","id":"19nyzksl"}
+{"time":"2025-02-20T05:09:11.929671576Z","level":"INFO","msg":"writer: Do: started","stream_id":"19nyzksl"}
+{"time":"2025-02-20T05:09:11.929826771Z","level":"INFO","msg":"sender: started","stream_id":"19nyzksl"}
+{"time":"2025-02-20T05:09:11.929992866Z","level":"INFO","msg":"handler: started","stream_id":"19nyzksl"}
+{"time":"2025-02-20T05:09:12.229074027Z","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-02-20T05:28:50.880330109Z","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2025-02-20T05:28:50.881731443Z","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2025-02-20T05:28:51.519975605Z","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-02-20T05:28:51.673132196Z","level":"INFO","msg":"handler: operation stats","stats":{}}
+{"time":"2025-02-20T05:28:52.68648844Z","level":"INFO","msg":"stream: closing","id":"19nyzksl"}
+{"time":"2025-02-20T05:28:52.686572757Z","level":"INFO","msg":"handler: closed","stream_id":"19nyzksl"}
+{"time":"2025-02-20T05:28:52.686618096Z","level":"INFO","msg":"writer: Close: closed","stream_id":"19nyzksl"}
+{"time":"2025-02-20T05:28:52.686726452Z","level":"INFO","msg":"sender: closed","stream_id":"19nyzksl"}
+{"time":"2025-02-20T05:28:52.686766691Z","level":"INFO","msg":"stream: closed","id":"19nyzksl"}

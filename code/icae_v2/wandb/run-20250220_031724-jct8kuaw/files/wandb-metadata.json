@@ -1,0 +1,46 @@
+{
+  "os":  "Linux-6.8.0-51-generic-x86_64-with-glibc2.35",
+  "python":  "CPython 3.10.12",
+  "startedAt":  "2025-02-20T03:17:24.579781Z",
+  "args":  [
+    "--output_dir",
+    "./output"
+  ],
+  "program":  "/home/ubuntu/icae/code/icae_v2/finetune_gsm8kcot_ae.py",
+  "codePath":  "code/icae_v2/finetune_gsm8kcot_ae.py",
+  "git":  {
+    "remote":  "https://github.com/alckasoc/icae",
+    "commit":  "8234a60de69859439da3c17a4542529d9d2cc7cd"
+  },
+  "email":  "tuvincent0106@gmail.com",
+  "root":  "/home/ubuntu/icae/code/icae_v2",
+  "host":  "104-171-202-73",
+  "executable":  "/usr/bin/python",
+  "codePathLocal":  "finetune_gsm8kcot_ae.py",
+  "cpu_count":  14,
+  "cpu_count_logical":  14,
+  "gpu":  "NVIDIA RTX A6000",
+  "gpu_count":  1,
+  "disk":  {
+    "/":  {
+      "total":  "532608356352",
+      "used":  "26295742464"
+    }
+  },
+  "memory":  {
+    "total":  "105476513792"
+  },
+  "cpu":  {
+    "count":  14,
+    "countLogical":  14
+  },
+  "gpu_nvidia":  [
+    {
+      "name":  "NVIDIA RTX A6000",
+      "memoryTotal":  "51527024640",
+      "cudaCores":  10752,
+      "architecture":  "Ampere"
+    }
+  ],
+  "cudaVersion":  "12.4"
+}

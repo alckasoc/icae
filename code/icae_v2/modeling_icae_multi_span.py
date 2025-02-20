@@ -14,74 +14,9 @@ from peft import (
 from torch.nn.functional import gelu
 import math
 from safetensors.torch import load_file
+from torch.nn import CosineEmbeddingLoss
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
-@dataclass
-class ModelArguments:
-    model_name_or_path: str = field(default="mistralai/Mistral-7B-v0.1")
-    lora_r: int = field(
-        default=128,
-        metadata={"help": "lora rank"}
-    )
-    lora_dropout: float = field(
-        default=0.05,
-        metadata={"help": "lora dropout"}
-    )
-    train: bool = field(
-        default=True,
-        metadata={"help": "if true, the model ckpt will be initialized for training; else, it's for inference"}
-    )
-
-@dataclass
-class DataArguments:
-    data_path: str = field(default=None, metadata={"help": "Path to the training data."})
-    debug_data: bool = field(default=False, metadata={"help": "Enable debug dataset to quickly verify the training process"})
-
-@dataclass
-class TrainingArguments(transformers.TrainingArguments):
-    cache_dir: Optional[str] = field(default=None)
-    optim: str = field(default="adamw_torch")
-    model_max_length: int = field(
-        default=28000,
-        metadata={"help": "Maximum sequence length. Sequences will be right padded (and possibly truncated)."},
-    )
-    fixed_mem_size: int = field(
-        default=128,
-        metadata={"help": "Enalbing the fixed mem size."},
-    )
-    mean_compression_rate: int = field(
-        default=4,
-        metadata={"help": "Mean compression rate; default=4"},
-    )
-    min_tokens_for_lm: int = field(
-        default=64,
-        metadata={"help": "Minimum tokens for lm objective learning"},
-    )
-    leave_tokens_for_lm: int = field(
-        default=8,
-        metadata={"help": "Leave some tokens without loss for lm objective"},
-    )
-    lm_ratio: float = field(
-        default=0.0,
-        metadata={"help": "Ratio for LM training."},
-    )
-    add_special_token_for_lm: bool = field(
-        default=False,
-        metadata={"help": "Add a special token for the prompt of language modeling; default: False"},
-    )
-    restore_from: str = field(
-        default="",
-        metadata={"help": "The checkpoint that should be restored from for fine-tuning"}
-    )
-    per_device_train_batch_size: int = field(
-        default=1,
-        metadata={"help": "The batch size per GPU/XPU/TPU/MPS/NPU core/CPU for training."}
-    )
-    per_device_eval_batch_size: int = field(
-        default=1,
-        metadata={"help": "The batch size per GPU/XPU/TPU/MPS/NPU core/CPU for evaluation."}
-    )
     
 def print_trainable_parameters(model):
     trainable_parameters = 0
@@ -220,7 +155,7 @@ class ICAE(torch.nn.Module):
             compress_outputs[segment_idx*self.mem_size: self.mem_size*(segment_idx+1)] = segment_compress_outputs[mem_flag]
             print(f"Filled in compressed memory for memory segment {segment_idx}.")
             
-            del segment_input_ids, segment_input_embedding
+            del segment_input_ids
             torch.cuda.empty_cache()
 
             print(f"===============Segment {segment_idx} END=======================")
@@ -244,20 +179,42 @@ class ICAE(torch.nn.Module):
         logits = decoder_outputs.logits
         print("decoder_outputs logits shape: ", logits.size())
 
-        effective_logits = logits[:,:-1,:].reshape(-1, logits.size(-1))  # Why are we skipping the last generated logit?
+        effective_logits = logits[:,:-1,:].reshape(-1, logits.size(-1))  # Why are we skipping the last generated logit? It's probably the eos token.
         print("effective_logits shape: ", effective_logits.size())
         target_ids = labels[:,1:].reshape(-1)  # Why does it take from the first index onwards?
         print("target_ids shape: ", target_ids.size())
-        loss = self.loss_fct(effective_logits, target_ids)
+
+        # Ensure input_mean_embedding has the same shape as compress_outputs
+        input_mean_embedding = segment_input_embedding.mean(dim=1).detach()  # (batch_size, hidden_dim)
+        
+        # Contrastive loss to ensure memory retains structured meaning
+        cosine_loss_fct = CosineEmbeddingLoss(margin=0.5)
+        contrastive_target = torch.ones(compress_outputs.shape[0]).to(compress_outputs.device)  # (batch_size,)
+        
+        # Apply contrastive loss between the compressed memory and input mean
+        contrastive_loss = cosine_loss_fct(compress_outputs, input_mean_embedding, contrastive_target)
+        
+        # Apply an additional MSE loss to prevent information loss
+        mse_loss_fct = torch.nn.MSELoss()
+        mse_loss_value = mse_loss_fct(compress_outputs, input_mean_embedding)
+        
+        # Add contrastive + MSE loss to total training loss
+        loss = self.loss_fct(effective_logits, target_ids) + 0.1 * contrastive_loss + 0.1 * mse_loss_value
+
+        del segment_input_embedding
+        torch.cuda.empty_cache()
+        
+        # loss = self.loss_fct(effective_logits, target_ids)
         return {"loss": loss, "logits": logits}
-    
-    
+
+
+
+
     def tokens_to_embeddings(self, token_ids):   # input_tokens can be either normal tokens and special tokens
         embeddings = self.icae.get_base_model().model.embed_tokens(token_ids)
         special_flags = token_ids >= self.vocab_size
         embeddings[special_flags] = self.memory_token_embed(token_ids[special_flags] - self.vocab_size).to(embeddings)    # replace special token's embedding from self.memory_token_embed
         return embeddings
-        
     
     def _compress(
         self,

@@ -1,0 +1,50 @@
+Loaded from the checkpoint: None
+[34m[1mwandb[0m: [33mWARNING[0m The `run_name` is currently set to the same value as `TrainingArguments.output_dir`. If this was not intended, please specify a different run name by setting the `TrainingArguments.run_name` parameter.
+  0%|                                                                                                                                                                                  | 0/5000 [00:00<?, ?it/s]`use_cache=True` is incompatible with gradient checkpointing. Setting `use_cache=False`.
+input_ids shape:  torch.Size([1, 130])
+prompt_answer_ids shape:  torch.Size([1, 133])
+labels shape:  torch.Size([1, 133])
+num_segments:  1
+segment_length:  130
+prompt_answer_embs shape:  torch.Size([1, 133, 2048])
+max_compressed_length:  1
+compress_outputs shape:  torch.Size([1, 2048])
+===============Segment 0=======================
+start_idx: 0 | end_idx: 130
+segment_input_ids shape:  torch.Size([1, 130])
+append_sequence shape:  torch.Size([1, 1])
+segment_input_ids shape after concat:  torch.Size([1, 131])
+mem_flag shape:  torch.Size([1, 131])
+segment_input_embedding shape:  torch.Size([1, 131, 2048])
+Populated segment_input_embedding memory tokens
+segment_compress_outputs (last hidden state) shape:  torch.Size([1, 131, 2048])
+Filled in compressed memory for memory segment 0.
+===============Segment 0 END=======================
+decoder_mem_flag shape:  torch.Size([1, 133])
+Populated decoder memory tokens with compressed outputs.
+Populated decoder special memory tokens.
+decoder_outputs logits shape:  torch.Size([1, 133, 128256])
+effective_logits shape:  torch.Size([132, 128256])
+target_ids shape:  torch.Size([132])
+Traceback (most recent call last):
+  File "/home/ubuntu/icae/code/icae_v2/finetune_gsm8kcot_ae.py", line 203, in <module>
+    main()
+  File "/home/ubuntu/icae/code/icae_v2/finetune_gsm8kcot_ae.py", line 185, in main
+    train_model(
+  File "/home/ubuntu/icae/code/icae_v2/training_utils.py", line 124, in train_model
+    train_result = trainer.train(resume_from_checkpoint=checkpoint)
+  File "/home/ubuntu/.local/lib/python3.10/site-packages/transformers/trainer.py", line 2241, in train
+    return inner_training_loop(
+  File "/home/ubuntu/.local/lib/python3.10/site-packages/transformers/trainer.py", line 2548, in _inner_training_loop
+    tr_loss_step = self.training_step(model, inputs, num_items_in_batch)
+  File "/home/ubuntu/.local/lib/python3.10/site-packages/transformers/trainer.py", line 3698, in training_step
+    loss = self.compute_loss(model, inputs, num_items_in_batch=num_items_in_batch)
+  File "/home/ubuntu/.local/lib/python3.10/site-packages/transformers/trainer.py", line 3759, in compute_loss
+    outputs = model(**inputs)
+  File "/usr/lib/python3/dist-packages/torch/nn/modules/module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/usr/lib/python3/dist-packages/torch/nn/modules/module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/ubuntu/icae/code/icae_v2/modeling_icae_multi_span.py", line 188, in forward
+    input_mean_embedding = segment_input_embedding.mean(dim=1).detach()  # (batch_size, hidden_dim)
+UnboundLocalError: local variable 'segment_input_embedding' referenced before assignment
