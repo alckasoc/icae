@@ -131,6 +131,7 @@ class TrainingArguments(transformers.TrainingArguments):
         default=2.5e-5
     )
     
+    
 
 def main():    
     parser = transformers.HfArgumentParser((ModelArguments, DataArguments, TrainingArguments))
@@ -141,8 +142,12 @@ def main():
     train_dataset = ds["train"]
     eval_dataset = ds["test"]
 
-    train_dataset = train_dataset.map(lambda example: {**example, "text": f"{example['question']}\n{example['response']}"}).shuffle(seed=42)
-    eval_dataset = eval_dataset.map(lambda example: {**example, "text": f"{example['question']}\n{example['response']}"}).shuffle(seed=42)
+    # Extract reasoning trace.
+    train_dataset = train_dataset.map(preprocess_function)
+    eval_dataset = eval_dataset.map(preprocess_function)
+    
+    train_dataset = train_dataset.map(lambda example: {**example, "text": example['reasoning_trace']}).shuffle(seed=42)
+    eval_dataset = eval_dataset.map(lambda example: {**example, "text": example['reasoning_trace']}).shuffle(seed=42)
     print("Dataset loaded successfully...")
 
     lora_config = LoraConfig(
@@ -160,24 +165,22 @@ def main():
     memory_size = training_args.fixed_mem_size
     MEM_TOKENS = list(range(model.vocab_size, model.vocab_size + memory_size))
 
-    train_dataset = train_dataset.map(preprocess_function)
-    eval_dataset = eval_dataset.map(preprocess_function)
-
-    print("Tokenizing train/eval datasets...")
-    train_dataset = train_dataset.map(pretrain_tokenize_function, batched=True, batch_size=1, fn_kwargs={"model": model, "mem": MEM_TOKENS, "lm_ratio": training_args.lm_ratio})
-    eval_dataset = eval_dataset.map(pretrain_tokenize_function, batched=True, fn_kwargs={"model": model, "mem": MEM_TOKENS})
-    print("Finished tokenizing train/eval datasets...")
-
     ### OVERFIT TO 1 EXAMPLE ###
     train_dataset = train_dataset.select([0])
     eval_dataset = eval_dataset.select([0])
     print("train_dataset overfit example: ", train_dataset[0]['question'])
 
     lines = [
-        "Four adults with 32 teeth went to the dentist for a checkup after realizing they were having severe tooth pain. They were found to have different numbers of damaged teeth, and each person had some teeth removed. The first person had 1/4 of all his teeth removed, and the second person had 3/8 of his teeth removed, the third person had half of his teeth removed, while the last person only had 4 teeth removed. What's the total number of teeth removed at the dental clinic?"
+        'Each adult has 32 teeth initially.\n\nFor the first person, 1/4 of 32 teeth were removed: 32 × (1/4) = 8 teeth removed.\n\nFor the second person, 3/8 of 32 teeth were removed: 32 × (3/8) = 12 teeth removed.\n\nFor the third person, 1/2 of 32 teeth were removed: 32 × (1/2) = 16 teeth removed.\n\nThe fourth person had exactly 4 teeth removed.\n\nAdding all teeth removed: 8 + 12 + 16 + 4 = 40 teeth.',
+        "Let's find Raymond's jewels first - he has 40 jewels.\n\nHalf of Raymond's jewels is 40 ÷ 2 = 20 jewels.\n\nAaron has 5 more jewels than half of Raymond's jewels, so Aaron has 20 + 5 = 25 jewels.\n\nSiobhan has 2 fewer jewels than Aaron, so she has 25 - 2 = 23 jewels."
     ]
     
     ############################
+
+    print("Tokenizing train/eval datasets...")
+    train_dataset = train_dataset.map(pretrain_tokenize_function, batched=True, batch_size=1, fn_kwargs={"model": model, "mem": MEM_TOKENS, "lm_ratio": training_args.lm_ratio})
+    eval_dataset = eval_dataset.map(pretrain_tokenize_function, batched=True, fn_kwargs={"model": model, "mem": MEM_TOKENS})
+    print("Finished tokenizing train/eval datasets...")
 
     data_collator = DataCollatorForDynamicPadding(model.pad_token_id)
 
@@ -193,11 +196,6 @@ def main():
         data_collator,
     )
     print("Finished training...")
-
-# model_args.model_name_or_path = "meta-llama/Llama-3.2-1B"
-# training_args.bf16 = True
-# training_args.gradient_checkpointing_kwargs = {"use_reentrant": False}  # manually add this argument in the code
-# training_args.lm_ratio = 0.0
 
 if __name__ == "__main__":
     main()

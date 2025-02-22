@@ -155,7 +155,7 @@ class ICAE(torch.nn.Module):
             compress_outputs[segment_idx*self.mem_size: self.mem_size*(segment_idx+1)] = segment_compress_outputs[mem_flag]
             print(f"Filled in compressed memory for memory segment {segment_idx}.")
             
-            del segment_input_ids
+            del segment_input_ids, segment_input_embedding
             torch.cuda.empty_cache()
 
             print(f"===============Segment {segment_idx} END=======================")
@@ -184,31 +184,8 @@ class ICAE(torch.nn.Module):
         target_ids = labels[:,1:].reshape(-1)  # Why does it take from the first index onwards?
         print("target_ids shape: ", target_ids.size())
 
-        # Ensure input_mean_embedding has the same shape as compress_outputs
-        input_mean_embedding = segment_input_embedding.mean(dim=1).detach()  # (batch_size, hidden_dim)
-        
-        # Contrastive loss to ensure memory retains structured meaning
-        cosine_loss_fct = CosineEmbeddingLoss(margin=0.5)
-        contrastive_target = torch.ones(compress_outputs.shape[0]).to(compress_outputs.device)  # (batch_size,)
-        
-        # Apply contrastive loss between the compressed memory and input mean
-        contrastive_loss = cosine_loss_fct(compress_outputs, input_mean_embedding, contrastive_target)
-        
-        # Apply an additional MSE loss to prevent information loss
-        mse_loss_fct = torch.nn.MSELoss()
-        mse_loss_value = mse_loss_fct(compress_outputs, input_mean_embedding)
-        
-        # Add contrastive + MSE loss to total training loss
-        loss = self.loss_fct(effective_logits, target_ids) + 0.1 * contrastive_loss + 0.1 * mse_loss_value
-
-        del segment_input_embedding
-        torch.cuda.empty_cache()
-        
-        # loss = self.loss_fct(effective_logits, target_ids)
+        loss = self.loss_fct(effective_logits, target_ids)
         return {"loss": loss, "logits": logits}
-
-
-
 
     def tokens_to_embeddings(self, token_ids):   # input_tokens can be either normal tokens and special tokens
         embeddings = self.icae.get_base_model().model.embed_tokens(token_ids)

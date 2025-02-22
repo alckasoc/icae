@@ -102,6 +102,7 @@ def train_model(model, train_dataset, eval_dataset, model_args, data_args, train
     
     run = wandb.init(
         project="icae",
+        tags=["new"]
     )
     
     trainer = Trainer(
@@ -147,7 +148,9 @@ def train_model(model, train_dataset, eval_dataset, model_args, data_args, train
 
     my_outputs = []
     for i, j in zip(lines, outputs):
+        print("=========================================================================")
         print(i)
+        print("=========================================================================")
         print(j)
         print("=========================================================================")
         my_outputs.append([i, j])
@@ -159,7 +162,7 @@ def train_model(model, train_dataset, eval_dataset, model_args, data_args, train
 
     run.log(
         {
-            "table": my_table
+            "icae_new": my_table
         }
     )
     
