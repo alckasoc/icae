@@ -1,0 +1,41 @@
+2025-02-22 09:59:10,554 INFO    MainThread:4924 [wandb_setup.py:_flush():67] Current SDK version is 0.19.7
+2025-02-22 09:59:10,554 INFO    MainThread:4924 [wandb_setup.py:_flush():67] Configure stats pid to 4924
+2025-02-22 09:59:10,555 INFO    MainThread:4924 [wandb_setup.py:_flush():67] Loading settings from /home/ubuntu/.config/wandb/settings
+2025-02-22 09:59:10,555 INFO    MainThread:4924 [wandb_setup.py:_flush():67] Loading settings from /home/ubuntu/icae/code/icae_v2/wandb/settings
+2025-02-22 09:59:10,555 INFO    MainThread:4924 [wandb_setup.py:_flush():67] Loading settings from environment variables
+2025-02-22 09:59:10,555 INFO    MainThread:4924 [wandb_init.py:setup_run_log_directory():647] Logging user logs to /home/ubuntu/icae/code/icae_v2/wandb/run-20250222_095910-gv1osjj4/logs/debug.log
+2025-02-22 09:59:10,555 INFO    MainThread:4924 [wandb_init.py:setup_run_log_directory():648] Logging internal logs to /home/ubuntu/icae/code/icae_v2/wandb/run-20250222_095910-gv1osjj4/logs/debug-internal.log
+2025-02-22 09:59:10,555 INFO    MainThread:4924 [wandb_init.py:init():761] calling init triggers
+2025-02-22 09:59:10,555 INFO    MainThread:4924 [wandb_init.py:init():766] wandb.init called with sweep_config: {}
+config: {'model_args': {'model_name_or_path': 'meta-llama/Llama-3.2-1B-Instruct', 'lora_r': 1024, 'lora_alpha': 256, 'lora_dropout': 0.0, 'train': True}, 'training_args': {'output_dir': './output', 'model_name_or_path': 'meta-llama/Llama-3.2-1B-Instruct', 'lora_r': 1024, 'lora_alpha': 256, 'lora_dropout': 0.0, 'max_steps': 5000, 'learning_rate': 5e-05, 'lr_scheduler_type': 'cosine', 'lr_scheduler_kwargs': '{"num_cycles": 1, "warmup_ratio": 0.05}', 'warmup_steps': 250, 'optim': 'adamw_torch', 'weight_decay': 0.01, 'notes': ''}, '_wandb': {}}
+2025-02-22 09:59:10,555 INFO    MainThread:4924 [wandb_init.py:init():784] starting backend
+2025-02-22 09:59:10,555 INFO    MainThread:4924 [wandb_init.py:init():788] sending inform_init request
+2025-02-22 09:59:10,557 INFO    MainThread:4924 [backend.py:_multiprocessing_setup():97] multiprocessing start_methods=fork,spawn,forkserver, using: spawn
+2025-02-22 09:59:10,557 INFO    MainThread:4924 [wandb_init.py:init():803] backend started and connected
+2025-02-22 09:59:10,559 INFO    MainThread:4924 [wandb_init.py:init():896] updated telemetry
+2025-02-22 09:59:10,563 INFO    MainThread:4924 [wandb_init.py:init():920] communicating run to backend with 90.0 second timeout
+2025-02-22 09:59:10,888 INFO    MainThread:4924 [wandb_init.py:init():995] starting run threads in backend
+2025-02-22 09:59:11,073 INFO    MainThread:4924 [wandb_run.py:_console_start():2377] atexit reg
+2025-02-22 09:59:11,073 INFO    MainThread:4924 [wandb_run.py:_redirect():2227] redirect: wrap_raw
+2025-02-22 09:59:11,073 INFO    MainThread:4924 [wandb_run.py:_redirect():2292] Wrapping output streams.
+2025-02-22 09:59:11,074 INFO    MainThread:4924 [wandb_run.py:_redirect():2317] Redirects installed.
+2025-02-22 09:59:11,075 INFO    MainThread:4924 [wandb_init.py:init():1037] run started, returning control to user process
+2025-02-22 09:59:11,397 WARNING MsgRouterThr:4924 [router.py:message_loop():77] message_loop has been closed
+Traceback (most recent call last):
+  File "/home/ubuntu/.local/lib/python3.10/site-packages/wandb/sdk/interface/router_sock.py", line 28, in _read_message
+    resp = self._sock_client.read_server_response(timeout=1)
+  File "/home/ubuntu/.local/lib/python3.10/site-packages/wandb/sdk/lib/sock_client.py", line 285, in read_server_response
+    data = self._read_packet_bytes(timeout=timeout)
+  File "/home/ubuntu/.local/lib/python3.10/site-packages/wandb/sdk/lib/sock_client.py", line 270, in _read_packet_bytes
+    raise SockClientClosedError
+wandb.sdk.lib.sock_client.SockClientClosedError
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/ubuntu/.local/lib/python3.10/site-packages/wandb/sdk/interface/router.py", line 70, in message_loop
+    msg = self._read_message()
+  File "/home/ubuntu/.local/lib/python3.10/site-packages/wandb/sdk/interface/router_sock.py", line 30, in _read_message
+    raise MessageRouterClosedError from e
+wandb.sdk.interface.router.MessageRouterClosedError
+2025-02-22 09:59:11,398 INFO    MsgRouterThr:4924 [mailbox.py:close():115] Closing mailbox, abandoning 1 handles.

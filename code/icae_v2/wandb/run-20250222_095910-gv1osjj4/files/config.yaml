@@ -1,0 +1,68 @@
+_wandb:
+    value:
+        cli_version: 0.19.7
+        m: []
+        python_version: 3.10.12
+        t:
+            "1":
+                - 1
+                - 2
+                - 3
+                - 5
+                - 11
+                - 12
+                - 41
+                - 49
+                - 51
+                - 53
+                - 55
+                - 71
+                - 98
+            "2":
+                - 1
+                - 2
+                - 3
+                - 5
+                - 11
+                - 12
+                - 41
+                - 49
+                - 51
+                - 53
+                - 55
+                - 71
+                - 98
+            "3":
+                - 15
+                - 16
+                - 23
+                - 55
+            "4": 3.10.12
+            "5": 0.19.7
+            "6": 4.49.0
+            "8":
+                - 5
+            "12": 0.19.7
+            "13": linux-x86_64
+model_args:
+    value:
+        lora_alpha: 256
+        lora_dropout: 0
+        lora_r: 1024
+        model_name_or_path: meta-llama/Llama-3.2-1B-Instruct
+        train: true
+training_args:
+    value:
+        learning_rate: 5e-05
+        lora_alpha: 256
+        lora_dropout: 0
+        lora_r: 1024
+        lr_scheduler_kwargs: '{"num_cycles": 1, "warmup_ratio": 0.05}'
+        lr_scheduler_type: cosine
+        max_steps: 5000
+        model_name_or_path: meta-llama/Llama-3.2-1B-Instruct
+        notes: ""
+        optim: adamw_torch
+        output_dir: ./output
+        warmup_steps: 250
+        weight_decay: 0.01

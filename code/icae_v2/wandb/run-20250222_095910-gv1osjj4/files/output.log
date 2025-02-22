@@ -1,0 +1,19 @@
+Loaded from the checkpoint: None
+Traceback (most recent call last):
+  File "/home/ubuntu/icae/code/icae_v2/finetune_gsm8kcot_ae.py", line 240, in <module>
+    main(model_args, training_args, args, args.notes)
+  File "/home/ubuntu/icae/code/icae_v2/finetune_gsm8kcot_ae.py", line 192, in main
+    train_model(
+  File "/home/ubuntu/icae/code/icae_v2/training_utils.py", line 130, in train_model
+    train_result = trainer.train(resume_from_checkpoint=checkpoint)
+  File "/home/ubuntu/.local/lib/python3.10/site-packages/transformers/trainer.py", line 2241, in train
+    return inner_training_loop(
+  File "/home/ubuntu/.local/lib/python3.10/site-packages/transformers/trainer.py", line 2321, in _inner_training_loop
+    self.create_optimizer_and_scheduler(num_training_steps=max_steps)
+  File "/home/ubuntu/.local/lib/python3.10/site-packages/transformers/trainer.py", line 1183, in create_optimizer_and_scheduler
+    self.create_scheduler(num_training_steps=num_training_steps, optimizer=optimizer)
+  File "/home/ubuntu/.local/lib/python3.10/site-packages/transformers/trainer.py", line 1746, in create_scheduler
+    self.lr_scheduler = get_scheduler(
+  File "/home/ubuntu/.local/lib/python3.10/site-packages/transformers/optimization.py", line 599, in get_scheduler
+    return schedule_func(
+TypeError: get_cosine_schedule_with_warmup() got an unexpected keyword argument 'warmup_ratio'

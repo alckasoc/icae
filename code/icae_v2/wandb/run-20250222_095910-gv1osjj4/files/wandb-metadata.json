@@ -1,0 +1,70 @@
+{
+  "os":  "Linux-6.8.0-51-generic-x86_64-with-glibc2.35",
+  "python":  "CPython 3.10.12",
+  "startedAt":  "2025-02-22T09:59:10.557851Z",
+  "args":  [
+    "--output_dir",
+    "./output",
+    "--model_name_or_path",
+    "meta-llama/Llama-3.2-1B-Instruct",
+    "--lora_r",
+    "1024",
+    "--lora_alpha",
+    "256",
+    "--lora_dropout",
+    "0.0",
+    "--max_steps",
+    "5000",
+    "--learning_rate",
+    "5e-5",
+    "--lr_scheduler_type",
+    "cosine",
+    "--lr_scheduler_kwargs",
+    "{\"num_cycles\": 1, \"warmup_ratio\": 0.05}",
+    "--warmup_steps",
+    "250",
+    "--optim",
+    "adamw_torch",
+    "--weight_decay",
+    "0.01",
+    "--notes",
+    ""
+  ],
+  "program":  "/home/ubuntu/icae/code/icae_v2/finetune_gsm8kcot_ae.py",
+  "codePath":  "code/icae_v2/finetune_gsm8kcot_ae.py",
+  "git":  {
+    "remote":  "https://github.com/alckasoc/icae",
+    "commit":  "b6b0c99788eb6ade5f93590652a27b745b06c626"
+  },
+  "email":  "tuvincent0106@gmail.com",
+  "root":  "/home/ubuntu/icae/code/icae_v2",
+  "host":  "129-146-7-130",
+  "executable":  "/usr/bin/python",
+  "codePathLocal":  "finetune_gsm8kcot_ae.py",
+  "cpu_count":  30,
+  "cpu_count_logical":  30,
+  "gpu":  "NVIDIA A100-SXM4-40GB",
+  "gpu_count":  1,
+  "disk":  {
+    "/":  {
+      "total":  "532608356352",
+      "used":  "28989128704"
+    }
+  },
+  "memory":  {
+    "total":  "232205754368"
+  },
+  "cpu":  {
+    "count":  30,
+    "countLogical":  30
+  },
+  "gpu_nvidia":  [
+    {
+      "name":  "NVIDIA A100-SXM4-40GB",
+      "memoryTotal":  "42949672960",
+      "cudaCores":  6912,
+      "architecture":  "Ampere"
+    }
+  ],
+  "cudaVersion":  "12.4"
+}

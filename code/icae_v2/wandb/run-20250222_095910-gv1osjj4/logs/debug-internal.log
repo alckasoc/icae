@@ -1,0 +1,15 @@
+{"time":"2025-02-22T09:59:10.559094105Z","level":"INFO","msg":"stream: starting","core version":"0.19.7","symlink path":"/home/ubuntu/icae/code/icae_v2/wandb/run-20250222_095910-gv1osjj4/logs/debug-core.log"}
+{"time":"2025-02-22T09:59:10.662223801Z","level":"INFO","msg":"created new stream","id":"gv1osjj4"}
+{"time":"2025-02-22T09:59:10.662255252Z","level":"INFO","msg":"stream: started","id":"gv1osjj4"}
+{"time":"2025-02-22T09:59:10.662293652Z","level":"INFO","msg":"writer: Do: started","stream_id":"gv1osjj4"}
+{"time":"2025-02-22T09:59:10.662313803Z","level":"INFO","msg":"handler: started","stream_id":"gv1osjj4"}
+{"time":"2025-02-22T09:59:10.662363314Z","level":"INFO","msg":"sender: started","stream_id":"gv1osjj4"}
+{"time":"2025-02-22T09:59:10.890791804Z","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-02-22T09:59:11.39766826Z","level":"INFO","msg":"stream: closing","id":"gv1osjj4"}
+{"time":"2025-02-22T09:59:11.397692261Z","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2025-02-22T09:59:11.398379506Z","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2025-02-22T09:59:14.354159543Z","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-02-22T09:59:14.54541701Z","level":"INFO","msg":"handler: closed","stream_id":"gv1osjj4"}
+{"time":"2025-02-22T09:59:14.545446511Z","level":"INFO","msg":"writer: Close: closed","stream_id":"gv1osjj4"}
+{"time":"2025-02-22T09:59:14.545456571Z","level":"INFO","msg":"sender: closed","stream_id":"gv1osjj4"}
+{"time":"2025-02-22T09:59:14.545493022Z","level":"INFO","msg":"stream: closed","id":"gv1osjj4"}

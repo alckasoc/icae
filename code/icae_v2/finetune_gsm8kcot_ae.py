@@ -6,6 +6,8 @@ from datasets import load_dataset
 from peft import (
     LoraConfig,
 )
+import argparse
+import json
 
 from training_utils import pretrain_tokenize_function, DataCollatorForDynamicPadding, train_model
 from modeling_icae_multi_span import ICAE
@@ -62,11 +64,6 @@ class ModelArguments:
         default=True,
         metadata={"help": "if true, the model ckpt will be initialized for training; else, it's for inference"}
     )
-
-@dataclass
-class DataArguments:
-    data_path: str = field(default=None, metadata={"help": "Path to the training data."})
-    debug_data: bool = field(default=False, metadata={"help": "Enable debug dataset to quickly verify the training process"})
 
 @dataclass
 class TrainingArguments(transformers.TrainingArguments):
@@ -130,13 +127,20 @@ class TrainingArguments(transformers.TrainingArguments):
     learning_rate: float = field(
         default=2.5e-5
     )
+    lr_scheduler_type: str = field(
+        default="cosine"
+    )
+    lr_scheduler_kwargs: dict = field(default_factory=dict)
+    warmup_steps: int = field(
+        default=0
+    )
+    weight_decay: float = field(
+        default=0.0
+    )
     
     
 
-def main():    
-    parser = transformers.HfArgumentParser((ModelArguments, DataArguments, TrainingArguments))
-    model_args, data_args, training_args = parser.parse_args_into_dataclasses()
-
+def main(model_args, training_args, args, notes):    
     print("Loading dataset...")
     ds = load_dataset("ankner/gsm8k-CoT")
     train_dataset = ds["train"]
@@ -186,16 +190,51 @@ def main():
 
     print("Training model...")
     train_model(
+        args,
+        notes,
         model, 
         train_dataset, 
         eval_dataset, 
         model_args,
-        data_args,
         training_args, 
         lines,
         data_collator,
     )
     print("Finished training...")
 
+ 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--output_dir", type=str)
+    parser.add_argument("--model_name_or_path", type=str)
+    parser.add_argument("--lora_r", type=int)
+    parser.add_argument("--lora_alpha", type=int)
+    parser.add_argument("--lora_dropout", type=float)
+    parser.add_argument("--max_steps", type=int)
+    parser.add_argument("--learning_rate", type=float)
+    parser.add_argument("--lr_scheduler_type", type=str)
+    parser.add_argument("--lr_scheduler_kwargs", type=str)
+    parser.add_argument("--warmup_steps", type=int)
+    parser.add_argument("--optim", type=str)
+    parser.add_argument("--weight_decay", type=float)
+    parser.add_argument("--notes", type=str)
+    args = parser.parse_args()
+    
+    lr_scheduler_kwargs = json.loads(args.lr_scheduler_kwargs)
+
+    model_args, training_args = ModelArguments(), TrainingArguments(output_dir=args.output_dir)
+
+    model_args.model_name_or_path = args.model_name_or_path
+    model_args.lora_r = args.lora_r
+    model_args.lora_alpha = args.lora_alpha
+    model_args.lora_dropout = args.lora_dropout
+
+    training_args.max_steps = args.max_steps
+    training_args.learning_rate = args.learning_rate
+    training_args.lr_scheduler_type = args.lr_scheduler_type
+    training_args.lr_scheduler_kwargs = lr_scheduler_kwargs
+    training_args.warmup_steps = args.warmup_steps
+    training_args.optim = args.optim
+    training_args.weight_decay = args.weight_decay
+
+    main(model_args, training_args, args, args.notes)

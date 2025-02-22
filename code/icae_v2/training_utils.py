@@ -76,7 +76,7 @@ def run_inference(model, lines):
     return outputs
 
 
-def train_model(model, train_dataset, eval_dataset, model_args, data_args, training_args, lines, data_collator=None):
+def train_model(args, notes, model, train_dataset, eval_dataset, model_args, training_args, lines, data_collator=None):
  
     last_checkpoint = None
     if os.path.isdir(training_args.output_dir) and not training_args.overwrite_output_dir:
@@ -102,7 +102,12 @@ def train_model(model, train_dataset, eval_dataset, model_args, data_args, train
     
     run = wandb.init(
         project="icae",
-        tags=["new"]
+        tags=["new"],
+        config={
+            "model_args": vars(model_args),
+            "training_args": vars(args)
+        },
+        notes=notes
     )
     
     trainer = Trainer(
